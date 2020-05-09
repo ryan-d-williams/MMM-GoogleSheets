@@ -1,0 +1,19 @@
+<div class="wrapper">
+  {% if loading %}
+    <div class="dimmed light medium">{{ phrases.loading | safe }}</div>
+  {% else %}
+    <div class="table-wrapper">
+      <table class="sheets-table">
+        {% for row in sheetData %}
+          <tr class="sheets-table-row">
+            {% for cell in row %}
+              <td class="small sheets-table-cell" style="{{cell.style}}">
+                {{cell.value}}
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% endif %}
+</div>

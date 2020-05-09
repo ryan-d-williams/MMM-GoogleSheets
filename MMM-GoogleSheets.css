@@ -1,0 +1,19 @@
+.MMM-GoogleSheets .sheets-table {
+  border-collapse: collapse;
+}
+
+.MMM-GoogleSheets .sheets-table-cell {
+  overflow: hidden;
+}
+
+
+.MMM-GoogleSheets .sheets-table-data {
+  display:inline-block;
+}
+
+.MMM-GoogleSheets .sheets-table-row{
+  font-size: 0px;
+}
+
+
+
