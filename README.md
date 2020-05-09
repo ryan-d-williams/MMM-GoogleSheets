@@ -1,14 +1,10 @@
-# MMM-DarkSkyForecast
+# MMM-GoogleSheets
 
 This a module for <strong>MagicMirror</strong><br>
 https://magicmirror.builders/<br>
 https://github.com/MichMich/MagicMirror
 
-![Screenshot](/../screenshots/MMM-DarkSkyForecast.png?raw=true "Screenshot")
-
-A weather module that displays current, hourly and daily forecast information
-using data from the Dark Sky API. This is a replacement module for MMM-MyWeather, now that Weather Underground no longer allows free API access.  This a complete rewrite from scratch but maintains
-much of the same functionality.
+This module displays data from Google Sheets Spreadsheets on the MagicMirror
 
 **NOTE:** This module uses the Nunjucks templating system introduced in version 2.2.0 of MagicMirror.  If you're seeing nothing on your display where you expect this module to appear, make sure your MagicMirror version is at least 2.2.0.
 
