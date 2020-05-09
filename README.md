@@ -1,5 +1,7 @@
 # MMM-GoogleSheets
 
+NOTE: This project is in an alpha / beta state. It has recently been added and needs some real life testing. Thanks in advance for helping to identify bugs and new features.
+
 This a module for <strong>MagicMirror</strong><br>
 https://magicmirror.builders/<br>
 https://github.com/MichMich/MagicMirror
@@ -91,13 +93,13 @@ At a minimum you need to supply the following required configuration parameters:
     </tr>
     <tr>
       <td><code>stylesFromSheet</code></td>
-      <td>List of style properties to use from the Google Sheet. This is useful if you want to mimic some of the Google Sheet styling but not all of it. Available properties are <code>background-color</code>, <code>color</code>, <code>text-decoration</code>, <code>font-style</code>, <code>font-size</code>, <code>font-weight</code>, <code>text-align</code>, <code>vertical-align</code>, <code>width</code>, and <code>height</code><br>
+      <td>List of style properties to use from the Google Sheet. This is useful if you want to mimic some of the Google Sheet styling but not all of it. Available properties are <code>background-color</code>, <code>color</code>, <code>text-decoration</code>, <code>font-style</code>, <code>font-size</code>, <code>font-weight</code>, <code>text-align</code>, <code>vertical-align</code>, <code>width</code>, and <code>height</code><br><br>
         Example: <code>["background-color", "font-size"]</code><br><br>
         Node: This property will  override cellStyle properties if there are conflictions.<br><br><strong>Type</strong> <code>String[]</code><br>Defaults to <code>[]</code></td>
     </tr>
     <tr>
       <td><code>customStyles</code></td>
-      <td>List of custom CSS styles that will be applied to each cell<br>
+      <td>List of custom CSS styles that will be applied to each cell<br><br>
         Example: <code>["padding: 5px 10px","font-size:25px"]</code><br><br>
         Node: This property will  override cellStyle properties if there are conflictions<br><br><strong>Type</strong> <code>String[]</code><br>Defaults to <code>[]</code></td>
     </tr>
@@ -107,7 +109,7 @@ At a minimum you need to supply the following required configuration parameters:
     </tr>
     <tr>
       <td><code>styleFunc</code></td>
-      <td>Custom function that returns styles for each cell. The function inputs are the row number, column number, and the Google Sheets properties of the cell at that row and column number. The function should return a valid CSS property string that will be applied to that cell.<br>
+      <td>Custom function that returns styles for each cell. The function inputs are the row number, column number, and the Google Sheets properties of the cell at that row and column number. The function should return a valid CSS property string that will be applied to that cell.<br><br>
         Example (color every other row text red): <code>(rowNum, colNum, cellProps) => {if(rowNum%2 == 0){return "color:red;"}}</code><br><br>
         Node: This property will  override cellStyle properties if there are conflictions .<br><br><strong>Type</strong> <code>Function</code><br>Defaults to <code>null</code></td>
     </tr>
@@ -130,11 +132,15 @@ At a minimum you need to supply the following required configuration parameters:
 },
 ```
 
+## In the Wild
+
+Send me pictures of your Google Sheets module and I'll add them here
+
+## Bugs & Feature Requests
+
+If you find an issue or want a new feature, [add it as an issue](https://github.com/ryan-d-williams/MMM-GoogleSheets/issues) and I'll be happy to (try to) make it happen
+
 ## Attributions
 
-**Skycons - Animated icon set by Dark Sky**<br />
-http://darkskyapp.github.io/skycons/<br />
-(using the fork created by Maxime Warner
-that allows individual details of the icons
-to be coloured<br />
-https://github.com/maxdow/skycons)
+I used @jclarke0000's great DarkSky module as a template to build this module
+https://github.com/jclarke0000/MMM-DarkSkyForecast
