@@ -94,6 +94,8 @@ At a minimum you need to supply the following required configuration parameters:
         <code>text</code> - Only the Google Sheet font colors are applied<br>
         <code>invert</code> - Cell background colors are used for text colors. Good for sheets that have lots of cell colors<br>
         <code>custom</code> - Custom user styling using other config options (below)<br>
+          <br>
+          Note: See the [limitations section](#limitations) for info on what styling can and cannot be mimicked from Google Sheets
         <br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>mimic</code></td>
     </tr>
     <tr>
@@ -160,6 +162,42 @@ In the future (if there is demand) I will update the library to use one script f
 
 - When mimicking cell styling from Google Sheets, I am unable to pull the border styles (it does not exist as an option in the API without a [major hack](https://stackoverflow.com/questions/48754286/retrieving-google-sheets-cell-border-style-programmatically). However, this has been mitigated with the `border` [property above](#other-optional-parameters) where you can add your own custom border
 - When mimicking cell styling from Google Sheets, bandings (alternating row / column colors) are not mimicked (yet - in a future version this will be allowed). However, this has been mitigated with the `styleFunc` [property above](#other-optional-parameters) where you can add your own custom function to style bandings (or any other conditional styles that you want).
+
+<table>
+    <tbody>
+        <tr>
+            <th>Can Mimic</th>
+            <th>Cannot Mimic</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                  <li>Cell values</li>
+                  <li>Background colors</li>
+                  <li>Font colors</li>
+                  <li> Font lines (underline, strikethrough)</li>
+                  <li>Font styles (italic, normal)</li>
+                  <li> Font sizes</li>
+                  <li>Font weights</li>
+                  <li>Horizontal alignment</li>
+                  <li>Vertical alignment</li>
+                  <li>Cell sizes (width and height)</li>
+                  <li>Merged cells</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                 <li>Cell borders (explained / mitigated in paragraph above)</li>
+                 <li>Bandings (explained / mitigated in paragraph above)</li>
+                 <li>Pictures (currently exploring)</li>
+                 <li>Graphs</li>
+                 <li>Sparklines</li>
+                 <li>Font families (planned for a future release)</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
 ## In the Wild
 
