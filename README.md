@@ -38,6 +38,8 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
         ```
     - At the top menu, click `Publish` and then `Deploy as Web App...`
     - In the menu that pops up, change "Who has access to the app:" to `Anyone, even anonymous`
+        - Leave "Project Version" as "New"
+        - Leave "Execute the app as:" as your account. __Do not change it to "User accessing the web app"__
     - Click `Deploy`
         - If this is your first time deploying the app, it will ask you to grant permissions
         - Click "Review Permissions"
