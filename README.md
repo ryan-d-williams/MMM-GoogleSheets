@@ -44,7 +44,7 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
         - If this is your first time deploying the app, it will ask you to grant permissions
         - Click "Review Permissions"
         - Click on your gmail account (the one that owns the spreadsheet)
-        - In the popup that says "This app isn't verified" click on "Go to {project name} (unsafe)"
+        - In the popup that says "This app isn't verified" click on "Advanced" and then "Go to {project name} (unsafe)"
         - Click on Allow
     - __Copy the URL in the following screen, this will be used in your config for the module__
 
