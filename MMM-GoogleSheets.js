@@ -30,7 +30,9 @@ Module.register("MMM-GoogleSheets", {
     stylesFromSheet: [], //["background-color","color","text-decoration","font-style","font-size","font-weight","text-align","vertical-align","width","height"]
     customStyles: [],
     headerStyles: [],
-    styleFunc: null
+    styleFunc: null,
+    usePassword: false,
+    password: ""
   },
 
   getScripts: function() {
@@ -100,8 +102,10 @@ Module.register("MMM-GoogleSheets", {
 
     if (notification == "GOOGLE_SHEETS_DATA" && payload.instanceId == this.identifier) {
 
+      console.log(payload);
       let combinedData = this.combineSheetsData(payload);
-      this.sheetData = this.processSheetData(combinedData);
+      let dataWithMerges = this.processMerges(combinedData, payload.merge_data);
+      this.sheetData = this.processCellStyles(dataWithMerges);
 
       this.updateDom(this.config.updateFadeSpeed);
 
@@ -125,7 +129,9 @@ Module.register("MMM-GoogleSheets", {
           text_align: sheetData.horiz_align[i][j],
           vertical_align: sheetData.vert_align[i][j],
           height: sheetData.cell_sizes[i][j].height,
-          width: sheetData.cell_sizes[i][j].width
+          width: sheetData.cell_sizes[i][j].width,
+          merge: false,
+          display: true
         }
       });
     });
@@ -133,7 +139,7 @@ Module.register("MMM-GoogleSheets", {
     return data;
   },
 
-  processSheetData: function(data) {
+  processCellStyles: function(data) {
     data.forEach((row, i) => {
       row.forEach((col, j) => {
                           
@@ -184,10 +190,10 @@ Module.register("MMM-GoogleSheets", {
           col.style += style + ":" + col[style.replace(/-/g,"_")] + suffix + ";";
         });
         
-        col.style += this.config.customStyles.join(";");
+        col.style += this.config.customStyles.join(";") + ";";
         
         if(i===0){
-          col.style += this.config.headerStyles.join(";");
+          col.style += this.config.headerStyles.join(";") + ";";
         }
         
         if(this.config.styleFunc){
@@ -207,6 +213,34 @@ Module.register("MMM-GoogleSheets", {
         
         
       });
+    });
+    
+    return data;
+  },
+  
+  processMerges: function(data, merges){
+    
+    merges.forEach(merge => {
+      let row = merge.start_row;
+      let col = merge.start_col;
+      data[row][col].merge = true;
+      data[row][col].merge_data = {
+        colspan: merge.num_cols,
+        rowspan: merge.num_rows
+      }
+      
+      let cum_height = 0;
+      for(let i = row; i<row + merge.num_rows; i++){
+        let cum_width = 0;
+        for(let j = col; j<col + merge.num_cols; j++){
+          data[i][j].display = false;
+          cum_width += data[i][j].width;
+        }
+        data[row][col].width = cum_width;
+        
+        cum_height += data[i][col].height;
+      }
+      data[row][col].height = cum_height;
     });
     
     return data;

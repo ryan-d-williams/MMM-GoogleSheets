@@ -39,6 +39,8 @@ module.exports = NodeHelper.create({
         "sheet=" + payload.sheet +
         "&range=" + payload.range;
         
+      console.log(url);
+        
       request({url: url, method: "GET"}, function( error, response, body) {
 
         if(!error && response.statusCode == 200) {

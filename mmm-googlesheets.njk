@@ -7,9 +7,15 @@
         {% for row in sheetData %}
           <tr class="sheets-table-row">
             {% for cell in row %}
-              <td class="small sheets-table-cell" style="{{cell.style}}">
-                {{cell.value}}
-              </td>
+              {% if cell.merge %}
+                <td class="small sheets-table-cell" style="{{cell.style}}" colspan="{{cell.merge_data.colspan}}" rowspan="{{cell.merge_data.rowspan}}"{>
+                  {{cell.value}}
+                </td>
+              {% elif cell.display %}
+                <td class="small sheets-table-cell" style="{{cell.style}}">
+                  {{cell.value}}
+                </td>
+              {% endif %}
             {% endfor %}
           </tr>
         {% endfor %}
