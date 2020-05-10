@@ -102,7 +102,6 @@ Module.register("MMM-GoogleSheets", {
 
     if (notification == "GOOGLE_SHEETS_DATA" && payload.instanceId == this.identifier) {
 
-      console.log(payload);
       let combinedData = this.combineSheetsData(payload);
       let dataWithMerges = this.processMerges(combinedData, payload.merge_data);
       this.sheetData = this.processCellStyles(dataWithMerges);
