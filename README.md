@@ -169,7 +169,7 @@ If you find an issue or want a new feature, [add it as an issue](https://github.
 
 ## Google Apps Script Library
 
-The library feature of google apps script is used to make it easy to update the code in the future for new features or bug fixes. If you feel more comfortable seeing the code yourself, you can copy the code from the file in this repo. Note that if you choose this option, you will need to manually copy-paste future updates in.
+The library feature of google apps script is used to make it easy to update the code in the future for new features or bug fixes. If you feel more comfortable seeing the code yourself, you can copy the code from the file [in this repo](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/code.gs). Note that if you choose this option, you will need to manually copy-paste future updates in.
 
 ### Updating the library
 
