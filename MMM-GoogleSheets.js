@@ -25,7 +25,7 @@ Module.register("MMM-GoogleSheets", {
     language: config.language,
     updateFadeSpeed: 500,
     moduleTimestampIdPrefix: "GOOGLE_SHEETS_TIMESTAMP_",
-    colorMode: "mimic",
+    cellStyle: "mimic",
     border: "none",
     stylesFromSheet: [], //["background-color","color","text-decoration","font-style","font-size","font-weight","text-align","vertical-align","width","height"]
     customStyles: [],
@@ -145,15 +145,15 @@ Module.register("MMM-GoogleSheets", {
                           
         col.style = "";
         
-        if(this.config.colorMode === "flat"){
+        if(this.config.cellStyle === "flat"){
           //col.style = "padding: 5px 5px 5px 0px;"
-        }else if(this.config.colorMode === "invert"){
+        }else if(this.config.cellStyle === "invert"){
           col.style = "color: " + col.background_color + ";";
-        }else if(this.config.colorMode === "text"){
+        }else if(this.config.cellStyle === "text"){
           col.style = "color: " + col.font_color + ";";
         }
         
-        if(this.config.colorMode === "mimic"){
+        if(this.config.cellStyle === "mimic"){
           col.style = "background-color:" + col.background_color + ";" +
                       "color: " + col.color + ";" +
                       "text-decoration:" + col.text_decoration + ";" +
