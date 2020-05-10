@@ -56,7 +56,9 @@ At a minimum you need to supply the following required configuration parameters:
 
 * `url` (the URL you got from step 1 of the installation process)
 * `sheet` (sheet name you want to get the range from)
-* `range` (range of cells you want to display on the MM)
+    * Example: "Sheet1"
+* `range` (range of cells - in A1 notation - that you want to display on the MM)
+    * Example: "A1:B7"
 
 ### Other optional parameters
 
