@@ -87,7 +87,7 @@ At a minimum you need to supply the following required configuration parameters:
     </tr>
     <tr>
       <td><code>language</code></td>
-      <td>The language to be used for display.<br><br><strong>Type</strong> <code>String</code><br>Defaults to the language set for Magic Mirror, but can be overridden with any of the language codes listed here: https://darksky.net/dev/docs#request-parameters.</td>
+      <td>The language to be used for display.<br><br><strong>Type</strong> <code>String</code><br>Defaults to the language set for Magic Mirror</td>
     </tr>
     <tr>
       <td><code>cellStyle</code></td>
@@ -139,7 +139,26 @@ At a minimum you need to supply the following required configuration parameters:
   </tbody>
 </table>
 
-## Sample Configuration
+## Sample Configurations
+
+### Minimal required Configuration
+
+```
+{
+  module: "MMM-GoogleSheets",
+  header: "Google Sheets",
+  position: "top_right",
+  config: {
+    url: "URL From Installation Step 1",
+    sheet: "Sheet1",
+    range: "A1:B6"
+  }
+}
+```
+
+### Sample Configuration with all properties
+
+Note there are a lot of style conflicts here. See the property descriptions above for notes on conflict precedence
 
 ```
 {
@@ -228,7 +247,7 @@ If the libary requires an update (your version is less than the version listed a
     
 ### Why Google Apps Script?
 
-Google Apps Script was choosen instead of the Google Sheets API because the [Sheet API](https://developers.google.com/sheets/api) requires OAuth2 authentication and it is a little more straight forward to get the Google Apps Script set up over the [credentials via Node.js](https://stackoverflow.com/questions/44448029/how-to-use-google-sheets-api-while-inside-a-google-cloud-function/51037780#51037780). It is currently planned that a future version of this project will allow both options for authentication
+Google Apps Script was chosen instead of the Google Sheets API because the [Sheet API](https://developers.google.com/sheets/api) requires OAuth2 authentication and it is a little more straight forward to get the Google Apps Script set up over the [credentials via Node.js](https://stackoverflow.com/questions/44448029/how-to-use-google-sheets-api-while-inside-a-google-cloud-function/51037780#51037780). It is currently planned that a future version of this project will allow both options for authentication
 
 ### Isn't it bad that Chrome says the project is "unsafe"?
 
