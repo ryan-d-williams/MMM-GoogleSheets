@@ -95,7 +95,7 @@ At a minimum you need to supply the following required configuration parameters:
         <code>invert</code> - Cell background colors are used for text colors. Good for sheets that have lots of cell colors<br>
         <code>custom</code> - Custom user styling using other config options (below)<br>
           <br>
-          Note: See the [limitations section](#limitations) for info on what styling can and cannot be mimicked from Google Sheets
+          Note: See the <a href="#limitations">limitations section</a> for info on what styling can and cannot be mimicked from Google Sheets
         <br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>mimic</code></td>
     </tr>
     <tr>
