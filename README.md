@@ -168,7 +168,16 @@ Note there are a lot of style conflicts here. See the property descriptions abov
   config: {
     url: "URL From Installation Step 1",
     sheet: "Sheet1",
-    range: "A1:B6"
+    range: "A1:B6",
+    updateInterval: 1, // minutes
+    requestDelay: 250, // ms
+    updateFadeSpeed: 0, // ms
+    cellStyle: "mimic",
+    border: "1px solid #777",
+    stylesFromSheet: ["background-color", "color", "font-weight"],
+    customStyles: ["font-size: 18px", "padding: 5px"],
+    headerStyles: ["font-weight: bold"],
+    styleFunc: (rowNum, colNum, cellProps) => {if(rowNum%2 == 0){return "background-color:#666;"}} // Colors every other row background
   }
 }
 ```
