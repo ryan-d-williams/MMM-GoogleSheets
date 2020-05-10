@@ -8,11 +8,11 @@ https://github.com/MichMich/MagicMirror
 
 This module displays data from Google Sheets Spreadsheets on the MagicMirror. Any data that you can display on a spreadsheet you can now display on your MM! Create your own custom dashboard, stay up to date on important data, or even create your own custom modules in Google Sheets without having to write the code.
 
-<img src="https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Custom.png?raw=true" alt="Example 1" width="25%" />
-<img src="https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Mimic.png?raw=true" alt="Example 2" width="25%" />
-<img src="https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Projects_Custom.png?raw=true" alt="Example 3" width="25%" />
-<img src="https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard.png?raw=true" alt="Example 4" width="25%" />
-<img src="https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard_2.png?raw=true" alt="Example 5" width="25%" />
+![Example 1](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Custom.png?raw=true)
+![Example 2](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Mimic.png?raw=true)
+![Example 3](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Projects_Custom.png?raw=true)
+![Example 4](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard.png?raw=true)
+![Example 5](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard_2.png?raw=true)
 
 **NOTE:** This module uses the Nunjucks templating system introduced in version 2.2.0 of MagicMirror.  If you're seeing nothing on your display where you expect this module to appear, make sure your MagicMirror version is at least 2.2.0.
 
