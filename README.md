@@ -45,6 +45,7 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
         - Click "Review Permissions"
         - Click on your gmail account (the one that owns the spreadsheet)
         - In the popup that says "This app isn't verified" click on "Advanced" and then "Go to {project name} (unsafe)"
+            - [(Why unsafe?)](#isnt-it-bad-that-chrome-says-the-project-is-unsafe)
         - Click on Allow
     - __Copy the URL in the following screen, this will be used in your config for the module__
 
@@ -224,6 +225,14 @@ If the libary requires an update (your version is less than the version listed a
     - Click on `Publish` -> `Deploy as web app...`
     - __ALSO IMPORTANT: You must select a new version (whatever your current version is + 1) for your deployed changes to take affect__
     - Click `Deploy`
+    
+### Why Google Apps Script?
+
+Google Apps Script was choosen instead of the Google Sheets API because the [Sheet API](https://developers.google.com/sheets/api) requires OAuth2 authentication and it is a little more straight forward to get the Google Apps Script set up over the [credentials via Node.js](https://stackoverflow.com/questions/44448029/how-to-use-google-sheets-api-while-inside-a-google-cloud-function/51037780#51037780). It is currently planned that a future version of this project will allow both options for authentication
+
+### Isn't it bad that Chrome says the project is "unsafe"?
+
+This is [default behavior](https://developers.google.com/sheets/api/quickstart/apps-script) for a Google Apps Script being deployed for the first time. If you are uncomfortable deploying it without seeing the code, see [this section](#google-apps-script-library) above
 
 ## Attributions
 
