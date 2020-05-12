@@ -10,6 +10,7 @@ This module displays data from Google Sheets Spreadsheets on the MagicMirror. An
 
 ![Example 1](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Custom.png?raw=true)
 ![Example 2](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Mimic.png?raw=true)
+![Example 6](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/grocery.png?raw=true)
 ![Example 3](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Projects_Custom.png?raw=true)
 ![Example 4](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard.png?raw=true)
 ![Example 5](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard_2.png?raw=true)
@@ -38,11 +39,14 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
         ```
     - At the top menu, click `Publish` and then `Deploy as Web App...`
     - In the menu that pops up, change "Who has access to the app:" to `Anyone, even anonymous`
+        - Leave "Project Version" as "New"
+        - Leave "Execute the app as:" as your account. __Do not change it to "User accessing the web app"__
     - Click `Deploy`
         - If this is your first time deploying the app, it will ask you to grant permissions
         - Click "Review Permissions"
         - Click on your gmail account (the one that owns the spreadsheet)
-        - In the popup that says "This app isn't verified" click on "Go to {project name} (unsafe)"
+        - In the popup that says "This app isn't verified" click on "Advanced" and then "Go to {project name} (unsafe)"
+            - [(Why unsafe?)](#isnt-it-bad-that-chrome-says-the-project-is-unsafe)
         - Click on Allow
     - __Copy the URL in the following screen, this will be used in your config for the module__
 
@@ -56,7 +60,9 @@ At a minimum you need to supply the following required configuration parameters:
 
 * `url` (the URL you got from step 1 of the installation process)
 * `sheet` (sheet name you want to get the range from)
-* `range` (range of cells you want to display on the MM)
+    * Example: "Sheet1"
+* `range` (range of cells - in A1 notation - that you want to display on the MM)
+    * Example: "A1:B7"
 
 ### Other optional parameters
 
@@ -82,7 +88,7 @@ At a minimum you need to supply the following required configuration parameters:
     </tr>
     <tr>
       <td><code>language</code></td>
-      <td>The language to be used for display.<br><br><strong>Type</strong> <code>String</code><br>Defaults to the language set for Magic Mirror, but can be overridden with any of the language codes listed here: https://darksky.net/dev/docs#request-parameters.</td>
+      <td>The language to be used for display.<br><br><strong>Type</strong> <code>String</code><br>Defaults to the language set for Magic Mirror</td>
     </tr>
     <tr>
       <td><code>cellStyle</code></td>
@@ -92,6 +98,8 @@ At a minimum you need to supply the following required configuration parameters:
         <code>text</code> - Only the Google Sheet font colors are applied<br>
         <code>invert</code> - Cell background colors are used for text colors. Good for sheets that have lots of cell colors<br>
         <code>custom</code> - Custom user styling using other config options (below)<br>
+          <br>
+          Note: See the <a href="#limitations">limitations section</a> for info on what styling can and cannot be mimicked from Google Sheets
         <br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>mimic</code></td>
     </tr>
     <tr>
@@ -132,7 +140,9 @@ At a minimum you need to supply the following required configuration parameters:
   </tbody>
 </table>
 
-## Sample Configuration
+## Sample Configurations
+
+### Minimal required Configuration
 
 ```
 {
@@ -143,6 +153,32 @@ At a minimum you need to supply the following required configuration parameters:
     url: "URL From Installation Step 1",
     sheet: "Sheet1",
     range: "A1:B6"
+  }
+}
+```
+
+### Sample Configuration with all properties
+
+Note there are a lot of style conflicts here. See the property descriptions above for notes on conflict precedence
+
+```
+{
+  module: "MMM-GoogleSheets",
+  header: "Google Sheets",
+  position: "top_right",
+  config: {
+    url: "URL From Installation Step 1",
+    sheet: "Sheet1",
+    range: "A1:B6",
+    updateInterval: 1, // minutes
+    requestDelay: 250, // ms
+    updateFadeSpeed: 0, // ms
+    cellStyle: "mimic",
+    border: "1px solid #777",
+    stylesFromSheet: ["background-color", "color", "font-weight"],
+    customStyles: ["font-size: 18px", "padding: 5px"],
+    headerStyles: ["font-weight: bold"],
+    styleFunc: (rowNum, colNum, cellProps) => {if(rowNum%2 == 0){return "background-color:#666;"}} // Colors every other row background
   }
 }
 ```
@@ -159,6 +195,42 @@ In the future (if there is demand) I will update the library to use one script f
 - When mimicking cell styling from Google Sheets, I am unable to pull the border styles (it does not exist as an option in the API without a [major hack](https://stackoverflow.com/questions/48754286/retrieving-google-sheets-cell-border-style-programmatically). However, this has been mitigated with the `border` [property above](#other-optional-parameters) where you can add your own custom border
 - When mimicking cell styling from Google Sheets, bandings (alternating row / column colors) are not mimicked (yet - in a future version this will be allowed). However, this has been mitigated with the `styleFunc` [property above](#other-optional-parameters) where you can add your own custom function to style bandings (or any other conditional styles that you want).
 
+<table>
+    <tbody>
+        <tr>
+            <th>Can Mimic</th>
+            <th>Cannot Mimic</th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                  <li>Cell values</li>
+                  <li>Background colors</li>
+                  <li>Font colors</li>
+                  <li> Font lines (underline, strikethrough)</li>
+                  <li>Font styles (italic, normal)</li>
+                  <li> Font sizes</li>
+                  <li>Font weights</li>
+                  <li>Horizontal alignment</li>
+                  <li>Vertical alignment</li>
+                  <li>Cell sizes (width and height)</li>
+                  <li>Merged cells</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                 <li>Cell borders (explained / mitigated in paragraph above)</li>
+                 <li>Bandings (explained / mitigated in paragraph above)</li>
+                 <li>Pictures (currently exploring)</li>
+                 <li>Graphs</li>
+                 <li>Sparklines</li>
+                 <li>Font families (planned for a future release)</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 ## In the Wild
 
 Send me pictures of your Google Sheets module and I'll add them here
@@ -169,7 +241,7 @@ If you find an issue or want a new feature, [add it as an issue](https://github.
 
 ## Google Apps Script Library
 
-The library feature of google apps script is used to make it easy to update the code in the future for new features or bug fixes. If you feel more comfortable seeing the code yourself, you can copy the code from the file in this repo. Note that if you choose this option, you will need to manually copy-paste future updates in.
+The library feature of google apps script is used to make it easy to update the code in the future for new features or bug fixes. If you feel more comfortable seeing the code yourself, you can copy the code from the file [in this repo](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/code.gs). Note that if you choose this option, you will need to manually copy-paste future updates in.
 
 ### Updating the library
 
@@ -182,6 +254,14 @@ If the libary requires an update (your version is less than the version listed a
     - Click on `Publish` -> `Deploy as web app...`
     - __ALSO IMPORTANT: You must select a new version (whatever your current version is + 1) for your deployed changes to take affect__
     - Click `Deploy`
+    
+### Why Google Apps Script?
+
+Google Apps Script was chosen instead of the Google Sheets API because the [Sheet API](https://developers.google.com/sheets/api) requires OAuth2 authentication and it is a little more straight forward to get the Google Apps Script set up over the [credentials via Node.js](https://stackoverflow.com/questions/44448029/how-to-use-google-sheets-api-while-inside-a-google-cloud-function/51037780#51037780). It is currently planned that a future version of this project will allow both options for authentication
+
+### Isn't it bad that Chrome says the project is "unsafe"?
+
+This is [default behavior](https://developers.google.com/sheets/api/quickstart/apps-script) for a Google Apps Script being deployed for the first time. If you are uncomfortable deploying it without seeing the code, see [this section](#google-apps-script-library) above
 
 ## Attributions
 
