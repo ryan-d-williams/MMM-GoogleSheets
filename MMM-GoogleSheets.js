@@ -34,6 +34,9 @@ Module.register("MMM-GoogleSheets", {
     usePassword: false,
     password: ""
   },
+  
+  validCellStyles: ["mimic", "flat", "text", "invert", "custom"],
+  validStylesFromSheet: ["background-color", "color", "text-decoration", "font-style", "font-size", "font-weight", "text-align", "vertical-align", "width", "height"],
 
   getScripts: function() {
     return [];
@@ -72,8 +75,23 @@ Module.register("MMM-GoogleSheets", {
     Log.info("Starting module: " + this.name);
     
     this.sheetData = null;
+    
+    if (this.validCellStyles.indexOf(this.config.cellStyle) == -1) {
+      this.config.cellStyle = this.defaults.cellStyle;
+    }
+    
+    if(this.config.stylesFromSheet.length){
+      this.config.stylesFromSheet = this.config.stylesFromSheet.filter(style => {
+        return this.validStylesFromSheet.indexOf(style) !== -1;
+      });
+    }
+    
+    this.sanitizeNumbers([
+      "updateInterval",
+      "requestDelay",
+      "updateFadeSpeed"
+    ]);
 
-    //start data poll
     var self = this;
     setTimeout(function() {
 
