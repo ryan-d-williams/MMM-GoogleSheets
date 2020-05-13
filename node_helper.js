@@ -35,6 +35,7 @@ module.exports = NodeHelper.create({
       
       var self = this;
       
+      
       var url = payload.url + "?" +
         "sheet=" + payload.sheet +
         "&range=" + payload.range;

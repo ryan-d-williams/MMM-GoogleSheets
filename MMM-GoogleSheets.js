@@ -65,8 +65,9 @@ Module.register("MMM-GoogleSheets", {
       },
       loading: this.sheetData === null,
       config: this.config,
-      sheetData: this.sheetData
-
+      sheetData: this.sheetData,
+      errors: this.errors,
+      anyErrors: this.anyErrors
     };
   },
 
@@ -75,34 +76,62 @@ Module.register("MMM-GoogleSheets", {
     Log.info("Starting module: " + this.name);
     
     this.sheetData = null;
+    this.anyErrors = false;
+    this.errors = {
+      url: false,
+      sheet: false,
+      range: false
+    };
     
-    if (this.validCellStyles.indexOf(this.config.cellStyle) == -1) {
-      this.config.cellStyle = this.defaults.cellStyle;
+    // Sanitize required parameters
+    if(!this.config.hasOwnProperty("url") || this.config.url.length==0){
+      this.errors.url = true;
+      this.anyErrors = true;
     }
     
-    if(this.config.stylesFromSheet.length){
-      this.config.stylesFromSheet = this.config.stylesFromSheet.filter(style => {
-        return this.validStylesFromSheet.indexOf(style) !== -1;
-      });
+    if(!this.config.hasOwnProperty("sheet") || this.config.sheet.length==0){
+      this.errors.sheet = true;
+      this.anyErrors = true;
     }
     
-    this.sanitizeNumbers([
-      "updateInterval",
-      "requestDelay",
-      "updateFadeSpeed"
-    ]);
-
-    var self = this;
-    setTimeout(function() {
-
-      //first data pull is delayed by config
-      self.getData();
-
-      setInterval(function() {
+    if(!this.config.hasOwnProperty("range") || this.config.range.length==0){
+      this.errors.range = true;
+      this.anyErrors = true;
+    }
+    
+    if(this.anyErrors){
+      this.updateDom(this.config.updateFadeSpeed);
+    }else{
+    
+      if (this.validCellStyles.indexOf(this.config.cellStyle) == -1) {
+        this.config.cellStyle = this.defaults.cellStyle;
+      }
+      
+      if(this.config.stylesFromSheet.length){
+        this.config.stylesFromSheet = this.config.stylesFromSheet.filter(style => {
+          return this.validStylesFromSheet.indexOf(style) !== -1;
+        });
+      }
+      
+      this.sanitizeNumbers([
+        "updateInterval",
+        "requestDelay",
+        "updateFadeSpeed"
+      ]);
+  
+      var self = this;
+      setTimeout(function() {
+  
+        //first data pull is delayed by config
         self.getData();
-      }, self.config.updateInterval * 60 * 1000); //convert to milliseconds
-
-    }, this.config.requestDelay);
+  
+        setInterval(function() {
+          self.getData();
+        }, self.config.updateInterval * 60 * 1000); //convert to milliseconds
+  
+      }, this.config.requestDelay);
+    
+    }
     
 
   },

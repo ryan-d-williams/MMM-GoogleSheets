@@ -1,6 +1,12 @@
 <div class="wrapper">
-  {% if loading %}
-    <div class="dimmed light medium">{{ phrases.loading | safe }}</div>
+  {% if anyErrors %}
+    {% for parameter, isError in errors %}
+      {% if isError %}
+        <div class="dimmed light small">Missing required parameter: {{parameter}}</div>
+      {% endif %}
+    {% endfor %}
+  {% elif loading %}
+    <div class="dimmed light small">{{ phrases.loading | safe }}</div>
   {% else %}
     <div class="table-wrapper">
       <table class="sheets-table">
