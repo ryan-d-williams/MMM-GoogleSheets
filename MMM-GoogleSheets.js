@@ -2,7 +2,7 @@
 
   Magic Mirror Module:
   MMM-GoogleSheets
-  https://github.com/jclarke0000/MMM-DarkSkyForecast
+  https://github.com/ryan-d-williams/MMM-GoogleSheets
 
   By Ryan Williams
   MIT Licensed
