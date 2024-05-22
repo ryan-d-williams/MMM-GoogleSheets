@@ -54,7 +54,7 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
     - Navigate into your MagicMirror `modules` folder and execute<br>
         `git clone https://github.com/ryan-d-williams/MMM-GoogleSheets.git`.
     - Navigate to the module folder (MMM-GoogleSheets) and execute<br>
-        `npm install request`
+        `npm install`
 
 
 ## Configuration
