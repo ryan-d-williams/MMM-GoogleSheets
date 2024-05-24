@@ -1,0 +1,24 @@
+{
+  "name": "MMM-GoogleSheets",
+  "version": "1.0.0",
+  "description": "Google Sheets Module for MagicMirror",
+  "main": "MMM-GoogleSheets.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryan-d-williams/MMM-GoogleSheets.git"
+  },
+  "keywords": [
+    "MagicMirror",
+    "Module",
+    "GoogleSheets"
+  ],
+  "author": "ryan-d-williams",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryan-d-williams/MMM-GoogleSheets/issues"
+  },
+  "homepage": "https://github.com/ryan-d-williams/MMM-GoogleSheets#readme",
+  "dependencies": {
+    "request": "^2.81.0"
+  }
+}
