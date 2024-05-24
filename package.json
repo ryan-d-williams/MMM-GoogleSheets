@@ -1,5 +1,5 @@
 {
-  "name": " MMM-GoogleSheets",
+  "name": "MMM-GoogleSheets",
   "version": "1.0.0",
   "description": "Google Sheets Module for MagicMirror",
   "main": "MMM-GoogleSheets.js",
@@ -10,8 +10,7 @@
   "keywords": [
     "MagicMirror",
     "Module",
-    "GoogleSheets",
-    "Salco"
+    "GoogleSheets"
   ],
   "author": "ryan-d-williams",
   "license": "MIT",
