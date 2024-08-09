@@ -1,12 +1,32 @@
 function doGet(e){
-  
+
   let params = e.parameters;
 
-  
+  /*if(params["usePassword"][0]){
+    if(params["password"][0] !== password){
+      return ContentService.createTextOutput(JSON.stringify("Error: Wrong Password")).setMimeType(ContentService.MimeType.JSON);
+    }
+  }*/
+
   let sheet_name = params["sheet"][0];
   let rangeA1 = params["range"][0];
-  
+
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheet_name);
+
+  if (sheet == null){
+    let res = {
+      error: true,
+      error_msg: `Sheet name ${sheet_name} does not exist in the spreadsheet`
+    }
+    return ContentService.createTextOutput(JSON.stringify(res)).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // Force the formulas to update
+  let originalCellValue = sheet.getRange("A1")
+  sheet.getRange("A1").setValue("update")
+  sheet.getRange("A1").setValue(originalCellValue)
+  SpreadsheetApp.flush();
+
   let range = sheet.getRange(rangeA1); //Use getRangeList when update to multiple ranges
 
   let range_values = range.getDisplayValues();
@@ -27,7 +47,7 @@ function doGet(e){
   let merged_ranges = range.getMergedRanges();
   let merge_data = [];
   merged_ranges.forEach(rng => {
-                        
+
      let rng_start_row = rng.getRow();
      let rng_start_col = rng.getColumn();
      let rng_num_rows = rng.getNumRows();
@@ -40,7 +60,7 @@ function doGet(e){
                       num_cols: Math.min(range_num_cols, rng_num_cols)
                      });
   });
-  
+
   let res = {
     values: range_values,
     backgrounds: range.getBackgrounds(),
@@ -53,8 +73,9 @@ function doGet(e){
     vert_align: range.getVerticalAlignments(),
     font_families: range.getFontFamilies(),
     cell_sizes: cell_sizes,
-    merge_data: merge_data
+    merge_data: merge_data,
+    error: false
   }
-  
+
  return ContentService.createTextOutput(JSON.stringify(res)).setMimeType(ContentService.MimeType.JSON);
 }
