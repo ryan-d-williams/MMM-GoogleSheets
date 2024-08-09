@@ -32,7 +32,7 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
    ![Add Library](/image/README/img2-AddLibrary.png)
    - Paste the following into the "Script ID" field `1a6A0PqVebZUkbUC8lq__djKv6y9wZyF8y7v8dIkPpV7-mdmxwrt5SxDK`
    - Click "Look Up"
-   - Select the most recent version of the library (currently 14)
+   - Select the most recent version of the library (currently 18)
    - Make sure the identifier says `MMMGoogleSheets`
    - Click `Add`
    - Paste the following code into the code editor (you can remove the default code)
@@ -277,13 +277,14 @@ The library feature of google apps script is used to make it easy to update the 
 
 If the libary requires an update (your version is less than the version listed above), you should follow the following steps:
 
-1. Open the script file (`Tools` -> `Script Editor` from your spreadsheet)
-2. Click on `Resources` -> `Libraries`
-3. Update the "Version" dropdown to the latest version
+1. Open the script file (`Extensions` -> `Apps Script` from your spreadsheet)
+2. On the left under "Libraries" you should see `MMMGoogleSheets`. Click on it
+3. Update the "Version" dropdown to the latest version (currently 18)
 4. __IMPORTANT: You must still redeploy the code as a web app for the changes to take place__
-   - Click on `Publish` -> `Deploy as web app...`
-   - __ALSO IMPORTANT: You must select a new version (whatever your current version is + 1) for your deployed changes to take affect__
+   - Click on `Deploy` -> `New Deployment`
+   - __ALSO IMPORTANT: Make sure "Execute as" is still your email and "Who has access" is still set to "Anyone"
    - Click `Deploy`
+   - __Copy the new deployment URL to your config__ (if you forget this step the updates will not work)
 
 ### Why Google Apps Script?
 
