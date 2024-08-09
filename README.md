@@ -17,8 +17,6 @@ This module displays data from Google Sheets Spreadsheets on the MagicMirror. An
 ![Example 4](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard.png?raw=true)
 ![Example 5](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard_2.png?raw=true)
 
-**NOTE:** This module uses the Nunjucks templating system introduced in version 2.2.0 of MagicMirror.  If you're seeing nothing on your display where you expect this module to appear, make sure your MagicMirror version is at least 2.2.0.
-
 ## Installation
 
 This installation process is two steps. Step 1 involves getting Google Apps Script set up to communicate with our MagicMirror module. Step 2 is the standard MagicMirror module installation.
@@ -80,8 +78,9 @@ At a minimum you need to supply the following required configuration parameters:
 * `sheet` (sheet name you want to get the range from)
   * Example: "Sheet1"
   * __IMPORTANT__: This is the _sheet_ name (located in the bottom left of the screen when you have the Google Sheet open). This is not the _document_ name (located in the top left of the of the screen when you have the Google Sheet open).
-* `range` (range of cells - in A1 notation - that you want to display on the MM)
-  * Example: "A1:B7"
+* `range` (either `auto` or range of cells - in A1 notation - that you want to display on the MM)
+  * Auto will use the [`getDataRange()`](https://developers.google.com/apps-script/reference/spreadsheet/sheet#getdatarange) function to pull all data from the sheet
+  * Example of A1 notation: "A1:B7"
 
 ### Other optional parameters
 
@@ -279,7 +278,7 @@ If the libary requires an update (your version is less than the version listed a
 
 1. Open the script file (`Extensions` -> `Apps Script` from your spreadsheet)
 2. On the left under "Libraries" you should see `MMMGoogleSheets`. Click on it
-3. Update the "Version" dropdown to the latest version (currently 18)
+3. Update the "Version" dropdown to the latest version (currently 20)
 4. __IMPORTANT: You must still redeploy the code as a web app for the changes to take place__
    - Click on `Deploy` -> `New Deployment`
    - __ALSO IMPORTANT: Make sure "Execute as" is still your email and "Who has access" is still set to "Anyone"__
@@ -306,3 +305,5 @@ If you find an issue or want a new feature, [add it as an issue](https://github.
 
 I used @jclarke0000's DarkSky module as a template to build this module
 https://github.com/jclarke0000/MMM-DarkSkyForecast
+
+**NOTE:** This module uses the Nunjucks templating system introduced in version 2.2.0 of MagicMirror.  If you're seeing nothing on your display where you expect this module to appear, make sure your MagicMirror version is at least 2.2.0.
