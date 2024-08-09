@@ -2,8 +2,8 @@
 
 NOTE: This project is in an alpha / beta state. It has recently been added and needs some real life testing. Thanks in advance for helping to identify bugs and new features.
 
-This a module for <strong>MagicMirror</strong><br>
-https://magicmirror.builders/<br>
+This a module for `<strong>`MagicMirror`</strong><br>`
+https://magicmirror.builders/`<br>`
 https://github.com/MichMich/MagicMirror
 
 This module displays data from Google Sheets Spreadsheets on the MagicMirror. Any data that you can display on a spreadsheet you can now display on your MM! Create your own custom dashboard, stay up to date on important data, or even create your own custom modules in Google Sheets without having to write the code.
@@ -17,45 +17,58 @@ This module displays data from Google Sheets Spreadsheets on the MagicMirror. An
 
 **NOTE:** This module uses the Nunjucks templating system introduced in version 2.2.0 of MagicMirror.  If you're seeing nothing on your display where you expect this module to appear, make sure your MagicMirror version is at least 2.2.0.
 
-
 ## Installation
 
 This installation process is two steps. Step 1 involves getting Google Apps Script set up to communicate with our MagicMirror module. Step 2 is the standard MagicMirror module installation.
 
 1. Setting up the Google Apps Script
-    - Navigate to the Google Sheet that you want to pull data from
-    - In the top menu, click on `Tools` and then `Script Editor`
-    - In the new script editor window, click on `Resources` and then `Libraries` in the top menu (you might be asked to name the project)
-    - Paste the following into the "Add a Library" field `1a6A0PqVebZUkbUC8lq__djKv6y9wZyF8y7v8dIkPpV7-mdmxwrt5SxDK`
-    - Click `Add`
-    - In the "Version" dropdown, select the highest available version (currently 14)
-        - Make sure the "Identifer" field reads `MMMGoogleSheets`
-    - Click `Save`
-    - Paste the following code into the code editor (you can remove the default code)
-        ```
-        function doGet(e){
-          return MMMGoogleSheets.doGet(e);
-        }
-        ```
-    - At the top menu, click `Publish` and then `Deploy as Web App...`
-    - In the menu that pops up, change "Who has access to the app:" to `Anyone, even anonymous`
-        - Leave "Project Version" as "New"
-        - Leave "Execute the app as:" as your account. __Do not change it to "User accessing the web app"__
-    - Click `Deploy`
-        - If this is your first time deploying the app, it will ask you to grant permissions
-        - Click "Review Permissions"
-        - Click on your gmail account (the one that owns the spreadsheet)
-        - In the popup that says "This app isn't verified" click on "Advanced" and then "Go to {project name} (unsafe)"
-            - [(Why unsafe?)](#isnt-it-bad-that-chrome-says-the-project-is-unsafe)
-        - Click on Allow
-    - __Copy the URL in the following screen, this will be used in your config for the module__
 
-2. Setting up the moculde
-    - Navigate into your MagicMirror `modules` folder and execute<br>
-        `git clone https://github.com/ryan-d-williams/MMM-GoogleSheets.git`.
-    - Navigate to the module folder (MMM-GoogleSheets) and execute<br>
-        `npm install`
+   - Navigate to the Google Sheet that you want to pull data from
+   - In the top menu, click on `Extensions` and then `Apps Script`
+   ![Extensions](/image/README/img1-Extensions.png)
+   - In the new script editor window, click on `Add a Library`
+   ![Add Library](/image/README/img2-AddLibrary.png)
+   - Paste the following into the "Script ID" field `1a6A0PqVebZUkbUC8lq__djKv6y9wZyF8y7v8dIkPpV7-mdmxwrt5SxDK`
+   - Click "Look Up"
+   - Select the most recent version of the library (currently 14)
+   - Make sure the identifier says `MMMGoogleSheets`
+   - Click `Add`
+   - Paste the following code into the code editor (you can remove the default code)
 
+     ```
+     function doGet(e){
+       return MMMGoogleSheets.doGet(e);
+     }
+     ```
+   - Near the top right, click `Deploy` and then `New Deployment`
+   ![Deploy](/image/README/img3-deploy.png)
+   - In the menu that pops up, press the gear in the top left and then `Web app`
+   ![WebApp](/image/README/img4-WebApp.png)
+   - In the menu that pops up:
+     - Add a description (optional)
+     - Leave "Execute the app as:" as your account. 
+       - __CRITICAL STEP: Do not change it to "User accessing the web app"__
+     - Change "Who has access:" to `Anyone` 
+       - __CRITICAL STEP: this must say `Anyone`__
+   
+     ![Settings](/image/README/img5-Settings.png)
+   - Click `Deploy`
+     - If this is your first time deploying the app, it will ask you to grant permissions
+       - Click "Authorize access"
+       - Click on your gmail account (the one that owns the spreadsheet)
+       - In the popup that says "Google hasn't verified this app" click on "Advanced"
+       - Click on "Go to {project name} (unsafe)"
+       - [(Why unsafe?)](#isnt-it-bad-that-chrome-says-the-project-is-unsafe)
+       - Click on Allow
+   - __Copy the URL (NOT the Deployment ID) in the following screen, this will be used in your config for the module__
+2. Setting up the module
+
+   - Navigate into your MagicMirror `modules` folder and execute
+
+     `git clone https://github.com/ryan-d-williams/MMM-GoogleSheets.git`.
+   - Navigate to the module folder (MMM-GoogleSheets) and execute
+   
+     `npm install`
 
 ## Configuration
 
@@ -63,9 +76,10 @@ At a minimum you need to supply the following required configuration parameters:
 
 * `url` (the URL you got from step 1 of the installation process)
 * `sheet` (sheet name you want to get the range from)
-    * Example: "Sheet1"
+  * Example: "Sheet1"
+  * __IMPORTANT__: This is the _sheet_ name (located in the bottom left of the screen when you have the Google Sheet open). This is not the _document_ name (located in the top left of the of the screen when you have the Google Sheet open).
 * `range` (range of cells - in A1 notation - that you want to display on the MM)
-    * Example: "A1:B7"
+  * Example: "A1:B7"
 
 ### Other optional parameters
 
@@ -185,6 +199,7 @@ Note there are a lot of style conflicts here. See the property descriptions abov
   }
 }
 ```
+
 ## Using the module for different Google Sheets
 
 If you want to use multiple instances of the module for multiple different Google Sheet ranges, you will need to follow step 1 of the installation process for each sheet (you need to set up a different script for each spreadsheet and get a new url for each instance of the module).
@@ -249,15 +264,15 @@ The library feature of google apps script is used to make it easy to update the 
 ### Updating the library
 
 If the libary requires an update (your version is less than the version listed above), you should follow the following steps:
-    
+
 1. Open the script file (`Tools` -> `Script Editor` from your spreadsheet)
 2. Click on `Resources` -> `Libraries`
 3. Update the "Version" dropdown to the latest version
 4. __IMPORTANT: You must still redeploy the code as a web app for the changes to take place__
-    - Click on `Publish` -> `Deploy as web app...`
-    - __ALSO IMPORTANT: You must select a new version (whatever your current version is + 1) for your deployed changes to take affect__
-    - Click `Deploy`
-    
+   - Click on `Publish` -> `Deploy as web app...`
+   - __ALSO IMPORTANT: You must select a new version (whatever your current version is + 1) for your deployed changes to take affect__
+   - Click `Deploy`
+
 ### Why Google Apps Script?
 
 Google Apps Script was chosen instead of the Google Sheets API because the [Sheet API](https://developers.google.com/sheets/api) requires OAuth2 authentication and it is a little more straight forward to get the Google Apps Script set up over the [credentials via Node.js](https://stackoverflow.com/questions/44448029/how-to-use-google-sheets-api-while-inside-a-google-cloud-function/51037780#51037780). It is currently planned that a future version of this project will allow both options for authentication
