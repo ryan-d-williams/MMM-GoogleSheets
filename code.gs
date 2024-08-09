@@ -13,10 +13,20 @@ function doGet(e){
 
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheet_name);
 
+  // Return error of sheet doesn't exist
   if (sheet == null){
     let res = {
       error: true,
-      error_msg: `Sheet name ${sheet_name} does not exist in the spreadsheet`
+      error_msg: `Sheet name "${sheet_name}" does not exist in the spreadsheet`
+    }
+    return ContentService.createTextOutput(JSON.stringify(res)).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // Return error if the range string is less than 2 characters
+  if(rangeA1.length < 2){
+    let res = {
+      error: true,
+      error_msg: "Missing required parameter 'range' or passed value is invalid"
     }
     return ContentService.createTextOutput(JSON.stringify(res)).setMimeType(ContentService.MimeType.JSON);
   }
@@ -27,7 +37,12 @@ function doGet(e){
   sheet.getRange("A1").setValue(originalCellValue)
   SpreadsheetApp.flush();
 
-  let range = sheet.getRange(rangeA1); //Use getRangeList when update to multiple ranges
+  let range;
+  if(rangeA1 == "auto"){
+    range = sheet.getDataRange(); // getDataRange will get the range for any data available in the sheet
+  }else{
+    range = sheet.getRange(rangeA1); // Use getRangeList when update to multiple ranges
+  }
 
   let range_values = range.getDisplayValues();
   let cell_sizes = range_values.map((row, i) => {
