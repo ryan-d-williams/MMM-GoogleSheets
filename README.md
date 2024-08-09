@@ -282,7 +282,7 @@ If the libary requires an update (your version is less than the version listed a
 3. Update the "Version" dropdown to the latest version (currently 18)
 4. __IMPORTANT: You must still redeploy the code as a web app for the changes to take place__
    - Click on `Deploy` -> `New Deployment`
-   - __ALSO IMPORTANT: Make sure "Execute as" is still your email and "Who has access" is still set to "Anyone"
+   - __ALSO IMPORTANT: Make sure "Execute as" is still your email and "Who has access" is still set to "Anyone"__
    - Click `Deploy`
    - __Copy the new deployment URL to your config__ (if you forget this step the updates will not work)
 
