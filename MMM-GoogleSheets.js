@@ -211,7 +211,7 @@ Module.register("MMM-GoogleSheets", {
         }else if(this.config.cellStyle === "invert"){
           col.style = "color: " + col.background_color + ";";
         }else if(this.config.cellStyle === "text"){
-          col.style = "color: " + col.font_color + ";";
+          col.style = "color: " + col.color + ";";
         }
 
         if(this.config.cellStyle === "mimic"){

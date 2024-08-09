@@ -1,9 +1,11 @@
 # MMM-GoogleSheets
 
-NOTE: This project is in an alpha / beta state. It has recently been added and needs some real life testing. Thanks in advance for helping to identify bugs and new features.
+__NOTE: If you use this module, please send me example images that I can include in the bottom of this page so others can be inspired by your work!__
 
-This a module for `<strong>`MagicMirror`</strong><br>`
-https://magicmirror.builders/`<br>`
+This a module for __MagicMirror__
+
+https://magicmirror.builders/
+
 https://github.com/MichMich/MagicMirror
 
 This module displays data from Google Sheets Spreadsheets on the MagicMirror. Any data that you can display on a spreadsheet you can now display on your MM! Create your own custom dashboard, stay up to date on important data, or even create your own custom modules in Google Sheets without having to write the code.
@@ -46,11 +48,11 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
    ![WebApp](/image/README/img4-WebApp.png)
    - In the menu that pops up:
      - Add a description (optional)
-     - Leave "Execute the app as:" as your account. 
+     - Leave "Execute the app as:" as your account.
        - __CRITICAL STEP: Do not change it to "User accessing the web app"__
-     - Change "Who has access:" to `Anyone` 
+     - Change "Who has access:" to `Anyone`
        - __CRITICAL STEP: this must say `Anyone`__
-   
+
      ![Settings](/image/README/img5-Settings.png)
    - Click `Deploy`
      - If this is your first time deploying the app, it will ask you to grant permissions
@@ -67,7 +69,7 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
 
      `git clone https://github.com/ryan-d-williams/MMM-GoogleSheets.git`.
    - Navigate to the module folder (MMM-GoogleSheets) and execute
-   
+
      `npm install`
 
 ## Configuration
@@ -200,6 +202,24 @@ Note there are a lot of style conflicts here. See the property descriptions abov
 }
 ```
 
+### Sample Configs with Images
+
+![GroceryExample](/screenshots/grocery.png)
+```
+{
+  module: "MMM-GoogleSheets",
+  header: "Grocery List",
+  position: "bottom_left",
+  config: {
+    url: "URL From Installation Step 1",
+    sheet: "Sheet1",
+    range: "A1:B10",
+    cellStyle: "invert",
+    stylesFromSheet: ["font-size", "text-align", "font-style", "vertical-align", "width", "height"]
+  }
+}
+```
+
 ## Using the module for different Google Sheets
 
 If you want to use multiple instances of the module for multiple different Google Sheet ranges, you will need to follow step 1 of the installation process for each sheet (you need to set up a different script for each spreadsheet and get a new url for each instance of the module).
@@ -249,14 +269,6 @@ In the future (if there is demand) I will update the library to use one script f
     </tbody>
 </table>
 
-## In the Wild
-
-Send me pictures of your Google Sheets module and I'll add them here
-
-## Bugs & Feature Requests
-
-If you find an issue or want a new feature, [add it as an issue](https://github.com/ryan-d-williams/MMM-GoogleSheets/issues) and I'll be happy to (try to) make it happen
-
 ## Google Apps Script Library
 
 The library feature of google apps script is used to make it easy to update the code in the future for new features or bug fixes. If you feel more comfortable seeing the code yourself, you can copy the code from the file [in this repo](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/code.gs). Note that if you choose this option, you will need to manually copy-paste future updates in.
@@ -280,6 +292,14 @@ Google Apps Script was chosen instead of the Google Sheets API because the [Shee
 ### Isn't it bad that Chrome says the project is "unsafe"?
 
 This is [default behavior](https://developers.google.com/sheets/api/quickstart/apps-script) for a Google Apps Script being deployed for the first time. If you are uncomfortable deploying it without seeing the code, see [this section](#google-apps-script-library) above
+
+## In the Wild
+
+Send me pictures of your Google Sheets module and I'll add them here
+
+## Bugs & Feature Requests
+
+If you find an issue or want a new feature, [add it as an issue](https://github.com/ryan-d-williams/MMM-GoogleSheets/issues) and I'll be happy to (try to) make it happen
 
 ## Attributions
 
