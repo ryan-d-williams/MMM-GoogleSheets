@@ -7,9 +7,9 @@
 
 *********************************/
 
-var NodeHelper = require("node_helper");
-var request = require("request");
-var moment = require("moment");
+let NodeHelper = require("node_helper");
+let request = require("request");
+let moment = require("moment");
 
 module.exports = NodeHelper.create({
 
@@ -21,10 +21,10 @@ module.exports = NodeHelper.create({
     
     if (notification === "GOOGLE_SHEETS_GET") {
       
-      var self = this;
+      let self = this;
       
       
-      var url = payload.url + "?" +
+      let url = payload.url + "?" +
         "sheet=" + payload.sheet +
         "&range=" + payload.range;
         
@@ -32,7 +32,7 @@ module.exports = NodeHelper.create({
 
         if(!error && response.statusCode == 200) {
 
-          var resp = JSON.parse(body);
+          let resp = JSON.parse(body);
           resp.instanceId = payload.instanceId;
           self.sendSocketNotification("GOOGLE_SHEETS_DATA", resp);
 
