@@ -1,10 +1,14 @@
 <div class="wrapper">
   {% if anyErrors %}
-    {% for parameter, isError in errors %}
-      {% if isError %}
-        <div class="dimmed light small">Missing required parameter: {{parameter}}</div>
-      {% endif %}
-    {% endfor %}
+    {% if paramErrors %}
+      {% for parameter, isError in errors %}
+        {% if isError %}
+          <div class="dimmed light small">Missing required parameter: {{parameter}}</div>
+        {% endif %}
+      {% endfor %}
+    {% elif runtimeErrors %}
+      <div class="dimmed light small">There was an error in the request: {{runtimeErrorMsg}}</div>
+    {% endif %}
   {% elif loading %}
     <div class="dimmed light small">{{ phrases.loading | safe }}</div>
   {% else %}

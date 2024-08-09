@@ -18,20 +18,19 @@ module.exports = NodeHelper.create({
   },
 
   socketNotificationReceived: function(notification, payload){
-    
+
     if (notification === "GOOGLE_SHEETS_GET") {
-      
+
       let self = this;
-      
-      
+
+
       let url = payload.url + "?" +
         "sheet=" + payload.sheet +
         "&range=" + payload.range;
-        
+
       request({url: url, method: "GET"}, function( error, response, body) {
 
         if(!error && response.statusCode == 200) {
-
           let resp = JSON.parse(body);
           resp.instanceId = payload.instanceId;
           self.sendSocketNotification("GOOGLE_SHEETS_DATA", resp);
@@ -42,7 +41,7 @@ module.exports = NodeHelper.create({
 
       });
 
-      
+
     }
   },
 
