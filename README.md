@@ -2,13 +2,13 @@
 
 __NOTE: If you use this module, please send me example images that I can include in the bottom of this page so others can be inspired by your work!__
 
-This a module for __MagicMirror__
+This a module for MagicMirror²
 
 https://magicmirror.builders/
 
-https://github.com/MichMich/MagicMirror
+https://github.com/MagicMirrorOrg/MagicMirror
 
-This module displays data from Google Sheets Spreadsheets on the MagicMirror. Any data that you can display on a spreadsheet you can now display on your MM! Create your own custom dashboard, stay up to date on important data, or even create your own custom modules in Google Sheets without having to write the code.
+This module displays data from Google Sheets Spreadsheets on the MagicMirror². Any data that you can display on a spreadsheet you can now display on your MM! Create your own custom dashboard, stay up to date on important data, or even create your own custom modules in Google Sheets without having to write the code.
 
 ![Example 1](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Custom.png?raw=true)
 ![Example 2](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Mimic.png?raw=true)
@@ -19,7 +19,7 @@ This module displays data from Google Sheets Spreadsheets on the MagicMirror. An
 
 ## Installation
 
-This installation process is two steps. Step 1 involves getting Google Apps Script set up to communicate with our MagicMirror module. Step 2 is the standard MagicMirror module installation.
+This installation process is two steps. Step 1 involves getting Google Apps Script set up to communicate with our MagicMirror² module. Step 2 is the standard MagicMirror² module installation.
 
 1. Setting up the Google Apps Script
 
@@ -63,12 +63,9 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
    - __Copy the URL (NOT the Deployment ID) in the following screen, this will be used in your config for the module__
 2. Setting up the module
 
-   - Navigate into your MagicMirror `modules` folder and execute
+   - Navigate into your MagicMirror² `modules` folder and execute
 
      `git clone https://github.com/ryan-d-williams/MMM-GoogleSheets.git`.
-   - Navigate to the module folder (MMM-GoogleSheets) and execute
-
-     `npm install`
 
 ## Configuration
 
@@ -106,7 +103,7 @@ At a minimum you need to supply the following required configuration parameters:
     </tr>
     <tr>
       <td><code>language</code></td>
-      <td>The language to be used for display.<br><br><strong>Type</strong> <code>String</code><br>Defaults to the language set for Magic Mirror</td>
+      <td>The language to be used for display.<br><br><strong>Type</strong> <code>String</code><br>Defaults to the language set for MagicMirror²</td>
     </tr>
     <tr>
       <td><code>cellStyle</code></td>
@@ -306,4 +303,4 @@ If you find an issue or want a new feature, [add it as an issue](https://github.
 I used @jclarke0000's DarkSky module as a template to build this module
 https://github.com/jclarke0000/MMM-DarkSkyForecast
 
-**NOTE:** This module uses the Nunjucks templating system introduced in version 2.2.0 of MagicMirror.  If you're seeing nothing on your display where you expect this module to appear, make sure your MagicMirror version is at least 2.2.0.
+**NOTE:** This module uses the Nunjucks templating system introduced in version 2.2.0 of MagicMirror².  If you're seeing nothing on your display where you expect this module to appear, make sure your MagicMirror² version is at least 2.2.0.
