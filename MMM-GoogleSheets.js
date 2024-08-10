@@ -10,7 +10,6 @@
 *********************************/
 
 Module.register("MMM-GoogleSheets", {
-
   /*
     This module uses the Nunjucks templating system introduced in
     version 2.2.0 of MagicMirror.  If you're seeing nothing on your
@@ -36,9 +35,20 @@ Module.register("MMM-GoogleSheets", {
   },
 
   validCellStyles: ["mimic", "flat", "text", "invert", "custom"],
-  validStylesFromSheet: ["background-color", "color", "text-decoration", "font-style", "font-size", "font-weight", "text-align", "vertical-align", "width", "height"],
+  validStylesFromSheet: [
+    "background-color",
+    "color",
+    "text-decoration",
+    "font-style",
+    "font-size",
+    "font-weight",
+    "text-align",
+    "vertical-align",
+    "width",
+    "height"
+  ],
 
-  getScripts: function() {
+  getScripts: function () {
     return [];
   },
 
@@ -58,7 +68,6 @@ Module.register("MMM-GoogleSheets", {
     and daily forecast.
    */
   getTemplateData: function () {
-
     return {
       phrases: {
         loading: this.translate("LOADING")
@@ -68,21 +77,20 @@ Module.register("MMM-GoogleSheets", {
       sheetData: this.sheetData,
       errors: this.errors,
       anyErrors: this.anyErrors,
-	  paramErrors: this.paramErrors,
-	  runtimeErrors: this.runtimeErrors,
-	  runtimeErrorMsg: this.runtimeErrorMsg
+      paramErrors: this.paramErrors,
+      runtimeErrors: this.runtimeErrors,
+      runtimeErrorMsg: this.runtimeErrorMsg
     };
   },
 
-  start: function() {
-
+  start: function () {
     Log.info("Starting module: " + this.name);
 
     this.sheetData = null;
     this.anyErrors = false;
-	this.paramErrors = false;
-	this.runtimeErrors = false;
-	this.runtimeErrorMsg = "";
+    this.paramErrors = false;
+    this.runtimeErrors = false;
+    this.runtimeErrorMsg = "";
     this.errors = {
       url: false,
       sheet: false,
@@ -90,35 +98,36 @@ Module.register("MMM-GoogleSheets", {
     };
 
     // Sanitize required parameters
-    if(!this.config.hasOwnProperty("url") || this.config.url.length==0){
+    if (!this.config.hasOwnProperty("url") || this.config.url.length == 0) {
       this.errors.url = true;
       this.paramErrors = true;
     }
 
-    if(!this.config.hasOwnProperty("sheet") || this.config.sheet.length==0){
+    if (!this.config.hasOwnProperty("sheet") || this.config.sheet.length == 0) {
       this.errors.sheet = true;
       this.paramErrors = true;
     }
 
-    if(!this.config.hasOwnProperty("range") || this.config.range.length==0){
+    if (!this.config.hasOwnProperty("range") || this.config.range.length == 0) {
       this.errors.range = true;
       this.paramErrors = true;
     }
 
-	this.anyErrors = this.paramErrors;
+    this.anyErrors = this.paramErrors;
 
-    if(this.anyErrors){
+    if (this.anyErrors) {
       this.updateDom(this.config.updateFadeSpeed);
-    }else{
-
+    } else {
       if (this.validCellStyles.indexOf(this.config.cellStyle) == -1) {
         this.config.cellStyle = this.defaults.cellStyle;
       }
 
-      if(this.config.stylesFromSheet.length){
-        this.config.stylesFromSheet = this.config.stylesFromSheet.filter(style => {
-          return this.validStylesFromSheet.indexOf(style) !== -1;
-        });
+      if (this.config.stylesFromSheet.length) {
+        this.config.stylesFromSheet = this.config.stylesFromSheet.filter(
+          (style) => {
+            return this.validStylesFromSheet.indexOf(style) !== -1;
+          }
+        );
       }
 
       this.sanitizeNumbers([
@@ -128,23 +137,21 @@ Module.register("MMM-GoogleSheets", {
       ]);
 
       var self = this;
-      setTimeout(function() {
-
+      setTimeout(function () {
         //first data pull is delayed by config
         self.getData();
 
-        setInterval(function() {
-          self.getData();
-        }, self.config.updateInterval * 60 * 1000); //convert to milliseconds
-
+        setInterval(
+          function () {
+            self.getData();
+          },
+          self.config.updateInterval * 60 * 1000
+        ); //convert to milliseconds
       }, this.config.requestDelay);
-
     }
-
-
   },
 
-  getData: function() {
+  getData: function () {
     this.sendSocketNotification("GOOGLE_SHEETS_GET", {
       url: this.config.url,
       sheet: this.config.sheet,
@@ -153,32 +160,35 @@ Module.register("MMM-GoogleSheets", {
     });
   },
 
-  socketNotificationReceived: function(notification, payload) {
+  socketNotificationReceived: function (notification, payload) {
+    if (
+      notification == "GOOGLE_SHEETS_DATA" &&
+      payload.instanceId == this.identifier
+    ) {
+      this.runtimeErrors = false;
+      this.anyErrors = false;
+      if (payload.error) {
+        this.runtimeErrors = true;
+        this.anyErrors = true;
+        this.runtimeErrorMsg = payload.error_msg;
+        this.updateDom(this.config.updateFadeSpeed);
+      } else {
+        let combinedData = this.combineSheetsData(payload);
+        let dataWithMerges = this.processMerges(
+          combinedData,
+          payload.merge_data
+        );
+        this.sheetData = this.processCellStyles(dataWithMerges);
 
-    if (notification == "GOOGLE_SHEETS_DATA" && payload.instanceId == this.identifier) {
-		this.runtimeErrors = false;
-		this.anyErrors = false;
-		if(payload.error){
-			this.runtimeErrors = true;
-			this.anyErrors = true;
-			this.runtimeErrorMsg = payload.error_msg;
-			this.updateDom(this.config.updateFadeSpeed);
-		}else{
-			let combinedData = this.combineSheetsData(payload);
-			let dataWithMerges = this.processMerges(combinedData, payload.merge_data);
-			this.sheetData = this.processCellStyles(dataWithMerges);
-
-			this.updateDom(this.config.updateFadeSpeed);
-		}
-		//this.sendNotification("GOOGLE_SHEETS_DATA_UPDATE", payload);
-
+        this.updateDom(this.config.updateFadeSpeed);
+      }
+      //this.sendNotification("GOOGLE_SHEETS_DATA_UPDATE", payload);
     }
-
   },
 
-  combineSheetsData: function(sheetData){
-    let data = sheetData.values.map((row,i) => {
-      return row.map((col,j) => {
+  combineSheetsData: function (sheetData) {
+    let data = sheetData.values.map((row, i) => {
+      return row.map((col, j) => {
         return {
           value: col,
           background_color: sheetData.backgrounds[i][j],
@@ -193,107 +203,103 @@ Module.register("MMM-GoogleSheets", {
           width: sheetData.cell_sizes[i][j].width,
           merge: false,
           display: true
-        }
+        };
       });
     });
 
     return data;
   },
 
-  processCellStyles: function(data) {
+  processCellStyles: function (data) {
     data.forEach((row, i) => {
       row.forEach((col, j) => {
-
         col.style = "";
 
-        if(this.config.cellStyle === "flat"){
+        if (this.config.cellStyle === "flat") {
           //col.style = "padding: 5px 5px 5px 0px;"
-        }else if(this.config.cellStyle === "invert"){
+        } else if (this.config.cellStyle === "invert") {
           col.style = "color: " + col.background_color + ";";
-        }else if(this.config.cellStyle === "text"){
+        } else if (this.config.cellStyle === "text") {
           col.style = "color: " + col.color + ";";
         }
 
-        if(this.config.cellStyle === "mimic"){
-          col.style = "background-color:" + col.background_color + ";" +
-                      "color: " + col.color + ";" +
-                      "text-decoration:" + col.text_decoration + ";" +
-                      "font-style:" + col.font_style + ";" +
-                      "font-size:" + col.font_size + "pt;" +
-                      "font-weight:" + col.font_weight + ";" +
-                      "text-align:" + col.text_align + ";" +
-                      "vertical-align:" + col.vertical_align+ ";" +
-                      "height:" + col.height + "px;" +
-                      "max-height:" + col.height + "px;" +
-                      "width:" + col.width + "px;" +
-                      "max-width:" + col.width + "px;";
+        if (this.config.cellStyle === "mimic") {
+          col.style = `
+			background-color: ${col.background_color};
+			color: ${col.color};
+			text-decoration: ${col.text_decoration};
+			font-style: ${col.font_style};
+			font-size: ${col.font_size}pt;
+			font-weight: ${col.font_weight};
+			text-align: ${col.text_align};
+			vertical-align: ${col.vertical_align};
+			height: ${col.height}px;
+			max-height: ${col.height}px;
+			width: ${col.width}px;
+			max-width: ${col.width}px;
+		`;
 
-          if(col.font_size * 1.333 > col.height){
-            col.style += "line-height:" + (col.font_size * 1.2) + "px;";
-          }else{
+          if (col.font_size * 1.333 > col.height) {
+            col.style += "line-height:" + col.font_size * 1.2 + "px;";
+          } else {
             col.style += "line-height:" + col.font_size + "pt;";
           }
 
-          col.data_style = "text-align:" + col.horiz_align + ";" +
-                           "padding: 0.2em 0.07em;";
-
-        }else{
+          col.data_style = `text-align:${col.horiz_align};padding: 0.2em 0.07em;`;
+        } else {
           col.data_style = "padding: 2px 8px";
         }
 
-        this.config.stylesFromSheet.forEach(style => {
+        this.config.stylesFromSheet.forEach((style) => {
           let suffix = "";
-          if(style === "font-size"){
+          if (style === "font-size") {
             suffix = "pt";
-          }else if(style === "width" || style === "height"){
+          } else if (style === "width" || style === "height") {
             suffix = "px";
           }
-          col.style += style + ":" + col[style.replace(/-/g,"_")] + suffix + ";";
+          col.style +=
+            style + ":" + col[style.replace(/-/g, "_")] + suffix + ";";
         });
 
         col.style += this.config.customStyles.join(";") + ";";
 
-        if(i===0){
+        if (i === 0) {
           col.style += this.config.headerStyles.join(";") + ";";
         }
 
-        if(this.config.styleFunc){
-          col.style += this.config.styleFunc(i,j,col);
+        if (this.config.styleFunc) {
+          col.style += this.config.styleFunc(i, j, col);
         }
 
-
-        if(this.config.border === "dimmed"){
+        if (this.config.border === "dimmed") {
           col.style += "border: 1px solid #666;";
-        }else if(this.config.border === "normal"){
+        } else if (this.config.border === "normal") {
           col.style += "border: 1px solid #999;";
-        }else if(this.config.border === "bright"){
+        } else if (this.config.border === "bright") {
           col.style += "border: 1px solid #fff;";
-        }else if(this.config.border !== "none"){
+        } else if (this.config.border !== "none") {
           col.style += "border:" + this.config.border + ";";
         }
-
-
       });
     });
 
     return data;
   },
 
-  processMerges: function(data, merges){
-
-    merges.forEach(merge => {
+  processMerges: function (data, merges) {
+    merges.forEach((merge) => {
       let row = merge.start_row;
       let col = merge.start_col;
       data[row][col].merge = true;
       data[row][col].merge_data = {
         colspan: merge.num_cols,
         rowspan: merge.num_rows
-      }
+      };
 
       let cum_height = 0;
-      for(let i = row; i<row + merge.num_rows; i++){
+      for (let i = row; i < row + merge.num_rows; i++) {
         let cum_width = 0;
-        for(let j = col; j<col + merge.num_cols; j++){
+        for (let j = col; j < col + merge.num_cols; j++) {
           data[i][j].display = false;
           cum_width += data[i][j].width;
         }
@@ -312,10 +318,9 @@ Module.register("MMM-GoogleSheets", {
     routine ensures they are numbers, and if they cannot be
     converted to integers, then the module defaults are used.
    */
-  sanitizeNumbers: function(keys) {
-
+  sanitizeNumbers: function (keys) {
     var self = this;
-    keys.forEach(function(key) {
+    keys.forEach(function (key) {
       if (isNaN(parseInt(self.config[key]))) {
         self.config[key] = self.defaults[key];
       } else {
@@ -323,8 +328,4 @@ Module.register("MMM-GoogleSheets", {
       }
     });
   }
-
-
-
-
 });
