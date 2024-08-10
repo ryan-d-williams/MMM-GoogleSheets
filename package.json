@@ -10,7 +10,9 @@
   "keywords": [
     "MagicMirror",
     "Module",
-    "GoogleSheets"
+    "GoogleSheets",
+    "Google Sheets",
+    "Spreadsheet"
   ],
   "author": "ryan-d-williams",
   "license": "MIT",
@@ -19,6 +21,9 @@
   },
   "homepage": "https://github.com/ryan-d-williams/MMM-GoogleSheets#readme",
   "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "eslint": "^9.9.0",
+    "globals": "^15.9.0",
     "prettier": "3.3.3"
   }
 }
