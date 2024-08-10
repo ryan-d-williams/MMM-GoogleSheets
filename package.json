@@ -18,9 +18,6 @@
     "url": "https://github.com/ryan-d-williams/MMM-GoogleSheets/issues"
   },
   "homepage": "https://github.com/ryan-d-williams/MMM-GoogleSheets#readme",
-  "dependencies": {
-    "request": "^2.81.0"
-  },
   "devDependencies": {
     "prettier": "3.3.3"
   }
