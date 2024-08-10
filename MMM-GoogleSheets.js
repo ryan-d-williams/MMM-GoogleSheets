@@ -224,43 +224,20 @@ Module.register("MMM-GoogleSheets", {
         }
 
         if (this.config.cellStyle === "mimic") {
-          col.style =
-            "background-color:" +
-            col.background_color +
-            ";" +
-            "color: " +
-            col.color +
-            ";" +
-            "text-decoration:" +
-            col.text_decoration +
-            ";" +
-            "font-style:" +
-            col.font_style +
-            ";" +
-            "font-size:" +
-            col.font_size +
-            "pt;" +
-            "font-weight:" +
-            col.font_weight +
-            ";" +
-            "text-align:" +
-            col.text_align +
-            ";" +
-            "vertical-align:" +
-            col.vertical_align +
-            ";" +
-            "height:" +
-            col.height +
-            "px;" +
-            "max-height:" +
-            col.height +
-            "px;" +
-            "width:" +
-            col.width +
-            "px;" +
-            "max-width:" +
-            col.width +
-            "px;";
+          col.style = `
+			background-color: ${col.background_color};
+			color: ${col.color};
+			text-decoration: ${col.text_decoration};
+			font-style: ${col.font_style};
+			font-size: ${col.font_size}pt;
+			font-weight: ${col.font_weight};
+			text-align: ${col.text_align};
+			vertical-align: ${col.vertical_align};
+			height: ${col.height}px;
+			max-height: ${col.height}px;
+			width: ${col.width}px;
+			max-width: ${col.width}px;
+		`;
 
           if (col.font_size * 1.333 > col.height) {
             col.style += "line-height:" + col.font_size * 1.2 + "px;";
@@ -268,8 +245,7 @@ Module.register("MMM-GoogleSheets", {
             col.style += "line-height:" + col.font_size + "pt;";
           }
 
-          col.data_style =
-            "text-align:" + col.horiz_align + ";" + "padding: 0.2em 0.07em;";
+          col.data_style = `text-align:${col.horiz_align};padding: 0.2em 0.07em;`;
         } else {
           col.data_style = "padding: 2px 8px";
         }
