@@ -32,7 +32,7 @@ function doGet(e){
   }
 
   // Force the formulas to update
-  let originalCellValue = sheet.getRange("A1")
+  let originalCellValue = sheet.getRange("A1").getValue()
   sheet.getRange("A1").setValue("update")
   sheet.getRange("A1").setValue(originalCellValue)
   SpreadsheetApp.flush();
