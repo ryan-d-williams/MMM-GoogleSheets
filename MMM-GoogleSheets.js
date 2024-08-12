@@ -176,6 +176,7 @@ Module.register("MMM-GoogleSheets", {
 
         this.updateDom(this.config.updateFadeSpeed);
       }
+      Log.info("New google sheets data received");
       //this.sendNotification("GOOGLE_SHEETS_DATA_UPDATE", payload);
     }
   },

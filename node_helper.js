@@ -17,8 +17,10 @@ module.exports = NodeHelper.create({
   },
 
   socketNotificationReceived: async function (notification, payload) {
-    if (notification === "GOOGLE_SHEETS_GET") {
+    if (notification === "GOOGLE_SHEETS_GET" && !payload.handled) {
       let self = this;
+
+      payload.handled = true;
       let url = `${payload.url}?sheet=${payload.sheet}&range=${payload.range}`;
       Log.log(`[MMM-GoogleSheets] Sending request to ${url}`);
 
