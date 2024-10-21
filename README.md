@@ -152,6 +152,35 @@ At a minimum you need to supply the following required configuration parameters:
         <b>Note: This property will  override cellStyle properties if there are conflicts</b><br><br><strong>Type</strong> <code>Function</code><br>Defaults to <code>null</code></td>
     </tr>
     <tr>
+      <td><code>scroll</code></td>
+      <td>If this is set to true, then only a portion of the table will be displayed and the table will scroll automatically to show the rest of the data (see below parameters).<br><br>
+      <strong>Type</strong> <code>Boolean</code><br>Defaults to <code>false</code></td>
+    </tr>
+    <tr>
+      <td><code>maxTableHeight</code></td>
+      <td>The number of rows to show at once during scrolling.<br><br>
+      <b>Note: The <code>scroll</code> property must be set to true or this parameter will be ignored</b><br><br>
+      <strong>Type</strong> <code>Integer</code><br>Defaults to <code>5</code></td>
+    </tr>
+    <tr>
+      <td><code>scrollTime</code></td>
+      <td>How long (in ms) it should take to scroll to the next table row.<br><br>
+      <b>Note: The <code>scroll</code> property must be set to true or this parameter will be ignored</b><br><br>
+      <strong>Type</strong> <code>Integer</code><br>Defaults to <code>1000</code></td>
+    </tr>
+    <tr>
+      <td><code>scrollDelayTime</code></td>
+      <td>How long (in ms) to delay after scrolling to the next row before staring another scroll. Set to 0 if you want continuous scrolling.<br><br>
+      <b>Note: The <code>scroll</code> property must be set to true or this parameter will be ignored</b><br><br>
+      <strong>Type</strong> <code>Integer</code><br>Defaults to <code>5000</code></td>
+    </tr>
+    <tr>
+      <td><code>smoothScroll</code></td>
+      <td>If you choose continuous scrolling (by setting <code>scrollDelayTime</code> to 0), you will notice that the scroll speed will change based on the row height. If this property is set to true, the scroll speed will be constant for the whole table regardless of the row height. It is calculated based on the average row height. Set this to true if you want continuous scrolling with a constant scroll speed.<br><br>
+      <b>Note: The <code>scroll</code> property must be set to true or this parameter will be ignored</b><br><br>
+      <strong>Type</strong> <code>Boolean</code><br>Defaults to <code>false</code></td>
+    </tr>
+    <tr>
   </tbody>
 </table>
 
