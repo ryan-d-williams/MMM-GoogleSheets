@@ -29,7 +29,8 @@ Module.register("MMM-GoogleSheets", {
     scroll: false,
     maxTableHeight: 5,
     scrollTime: 1000,
-    scrollDelayTime: 5000
+    scrollDelayTime: 5000,
+    smoothScroll: false
   },
 
   validCellStyles: ["mimic", "flat", "text", "invert", "custom"],
@@ -220,7 +221,7 @@ class TableScrolling {
   constructor(config) {
     this.currentRowScroll = config.maxTableHeight + 1;
     this.fullTableLength = 0;
-	this.config = config;
+    this.config = config;
   }
 
   async doScrolling(fullTableLength) {
@@ -228,13 +229,15 @@ class TableScrolling {
     this.setTableHeight(this.config.maxTableHeight);
     while (true) {
       if (this.currentRowScroll > this.fullTableLength) {
+		this.resetScroll();
         this.currentRowScroll = this.config.maxTableHeight;
       }
 
-	  console.log(this.config)
       await this.scrollToRow(this.currentRowScroll, this.config.scrollTime);
       this.currentRowScroll++;
-      await new Promise((resolve) => setTimeout(resolve, this.config.scrollDelayTime));
+      await new Promise((resolve) =>
+        setTimeout(resolve, this.config.scrollDelayTime)
+      );
     }
   }
 
@@ -246,16 +249,31 @@ class TableScrolling {
     wrapper_el.style.maxHeight = `${row_el.offsetHeight + row_el.offsetTop}px`;
   }
 
+  resetScroll(){
+	let wrapper_el = document.getElementsByClassName("table-wrapper")[0];
+	wrapper_el.scrollTop = 0;
+  }
+
   async scrollToRow(row_num, duration) {
     let wrapper_el = document.getElementsByClassName("table-wrapper")[0];
     let row_el =
       document.getElementsByClassName("sheets-table-row")[row_num - 1];
 
-    const totalScrollDistance =
-      row_el.offsetTop -
-      wrapper_el.offsetHeight +
-      row_el.offsetHeight -
-      wrapper_el.scrollTop;
+    let totalScrollDistance;
+    if (this.config.smoothScroll) {
+      let tableRows = Array.from(
+        document.getElementsByClassName("sheets-table-row")
+      );
+      totalScrollDistance =
+        tableRows.reduce((acc, row) => acc + row.scrollHeight, 0) /
+        tableRows.length;
+    } else {
+      totalScrollDistance =
+        row_el.offsetTop -
+        wrapper_el.offsetHeight +
+        row_el.offsetHeight -
+        wrapper_el.scrollTop;
+    }
     let scrollY = wrapper_el.scrollTop;
     let newScrollTop = totalScrollDistance + scrollY;
     let oldTimestamp = document.timeline.currentTime;
