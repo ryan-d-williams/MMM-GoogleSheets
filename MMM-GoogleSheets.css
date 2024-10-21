@@ -15,5 +15,7 @@
   font-size: 0px;
 }
 
-
+.MMM-GoogleSheets .table-wrapper{
+  overflow: hidden;
+}
 
