@@ -154,6 +154,7 @@ At a minimum you need to supply the following required configuration parameters:
     <tr>
       <td><code>scroll</code></td>
       <td>If this is set to true, then only a portion of the table will be displayed and the table will scroll automatically to show the rest of the data (see below parameters).<br><br>
+      <b>Note: This features requires version 2.29.0 or higher of MM. Please update to at least that version before using this feature.</b><br><br>
       <strong>Type</strong> <code>Boolean</code><br>Defaults to <code>false</code></td>
     </tr>
     <tr>
