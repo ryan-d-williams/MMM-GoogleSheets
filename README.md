@@ -11,6 +11,7 @@ https://github.com/MagicMirrorOrg/MagicMirror
 This module displays data from Google Sheets Spreadsheets on the MagicMirror². Any data that you can display on a spreadsheet you can now display on your MM! Create your own custom dashboard, stay up to date on important data, or even create your own custom modules in Google Sheets without having to write the code.
 
 ![Example 1](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Custom.png?raw=true)
+![Example 7](/image/README/MMM-GoogleSheets-Scroll.gif)
 ![Example 2](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Mimic.png?raw=true)
 ![Example 6](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/grocery.png?raw=true)
 ![Example 3](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Projects_Custom.png?raw=true)
@@ -150,6 +151,36 @@ At a minimum you need to supply the following required configuration parameters:
         The available properties of the third argument to the function are <code>background_color</code>, <code>color</code>, <code>text_decoration</code>, <code>font_style</code>, <code>font_size</code>, <code>font_weight</code>, <code>text_align</code>, <code>vertical_align</code>, <code>height</code>, <code>width</code>, <code>display</code> (true if the cell will be rendered) <br>
         Note that these properties are not CSS properties, but rather the attributes pulled from Google Sheets. These attributes will not be applied to the cell unless you are in a mimic mode with <code>cellStyle</code> or <code>stylesFromSheet</code> <br><br>
         <b>Note: This property will  override cellStyle properties if there are conflicts</b><br><br><strong>Type</strong> <code>Function</code><br>Defaults to <code>null</code></td>
+    </tr>
+    <tr>
+      <td><code>scroll</code></td>
+      <td>If this is set to true, then only a portion of the table will be displayed and the table will scroll automatically to show the rest of the data (see below parameters).<br><br>
+      <b>Note: This features requires version 2.29.0 or higher of MM. Please update to at least that version before using this feature.</b><br><br>
+      <strong>Type</strong> <code>Boolean</code><br>Defaults to <code>false</code></td>
+    </tr>
+    <tr>
+      <td><code>maxTableHeight</code></td>
+      <td>The number of rows to show at once during scrolling.<br><br>
+      <b>Note: The <code>scroll</code> property must be set to true or this parameter will be ignored</b><br><br>
+      <strong>Type</strong> <code>Integer</code><br>Defaults to <code>5</code></td>
+    </tr>
+    <tr>
+      <td><code>scrollTime</code></td>
+      <td>How long (in ms) it should take to scroll to the next table row.<br><br>
+      <b>Note: The <code>scroll</code> property must be set to true or this parameter will be ignored</b><br><br>
+      <strong>Type</strong> <code>Integer</code><br>Defaults to <code>1000</code></td>
+    </tr>
+    <tr>
+      <td><code>scrollDelayTime</code></td>
+      <td>How long (in ms) to delay after scrolling to the next row before staring another scroll. Set to 0 if you want continuous scrolling.<br><br>
+      <b>Note: The <code>scroll</code> property must be set to true or this parameter will be ignored</b><br><br>
+      <strong>Type</strong> <code>Integer</code><br>Defaults to <code>5000</code></td>
+    </tr>
+    <tr>
+      <td><code>smoothScroll</code></td>
+      <td>If you choose continuous scrolling (by setting <code>scrollDelayTime</code> to 0), you will notice that the scroll speed will change based on the row height. If this property is set to true, the scroll speed will be constant for the whole table regardless of the row height. It is calculated based on the average row height. Set this to true if you want continuous scrolling with a constant scroll speed.<br><br>
+      <b>Note: The <code>scroll</code> property must be set to true or this parameter will be ignored</b><br><br>
+      <strong>Type</strong> <code>Boolean</code><br>Defaults to <code>false</code></td>
     </tr>
     <tr>
   </tbody>

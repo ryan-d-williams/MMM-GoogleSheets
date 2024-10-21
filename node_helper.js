@@ -8,7 +8,6 @@
 *********************************/
 
 let NodeHelper = require("node_helper");
-let moment = require("moment");
 const Log = require("logger");
 
 module.exports = NodeHelper.create({
@@ -36,11 +35,13 @@ module.exports = NodeHelper.create({
           self.sendSocketNotification("GOOGLE_SHEETS_DATA", data);
         } catch (jsonError) {
           Log.error(
-            `[MMM-Google-Sheets] **ERROR** There was an error with the request at ${moment().format("D-MMM-YY HH:mm")}. This URL should work in your browser: ${url}`
+            `[MMM-Google-Sheets] **ERROR** There was an error with the request. This URL should work in your browser: ${url}`
           );
           Log.error(
             `[MMM-Google-Sheets] **ERROR** Are you sure you deployed for 'Anyone'? Check the README: https://github.com/ryan-d-williams/MMM-GoogleSheets.`
           );
+          Log.error("Full Error Message:");
+          Log.error(jsonError);
           let resp = {
             error: true,
             error_msg:
@@ -51,8 +52,10 @@ module.exports = NodeHelper.create({
         }
       } catch (requestError) {
         Log.error(
-          `[MMM-Google-Sheets] **ERROR** There was an error with the request at ${moment().format("D-MMM-YY HH:mm")}. This URL should work in your browser: ${url}`
+          `[MMM-Google-Sheets] **ERROR** There was an error with the request. This URL should work in your browser: ${url}`
         );
+        Log.error("Full Error Message:");
+        Log.error(requestError);
         let resp = {
           error: true,
           error_msg:

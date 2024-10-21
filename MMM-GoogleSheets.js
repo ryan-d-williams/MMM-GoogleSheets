@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /*********************************
 
   MagicMirror² Module:
@@ -8,9 +9,8 @@
   MIT Licensed
 
 *********************************/
-
 Module.register("MMM-GoogleSheets", {
-  requiresVersion: "2.2.0",
+  requiresVersion: "2.29.0",
 
   defaults: {
     updateInterval: 10, // minutes
@@ -25,7 +25,12 @@ Module.register("MMM-GoogleSheets", {
     headerStyles: [],
     styleFunc: null,
     usePassword: false,
-    password: ""
+    password: "",
+    scroll: false,
+    maxTableHeight: 5,
+    scrollTime: 1000,
+    scrollDelayTime: 5000,
+    smoothScroll: false
   },
 
   validCellStyles: ["mimic", "flat", "text", "invert", "custom"],
@@ -91,18 +96,21 @@ Module.register("MMM-GoogleSheets", {
       range: false
     };
 
+    this.tableScrolling = new TableScrolling(this.config);
+    this.dataProcessing = new GoogleSheetsDataProcessing(this.config);
+
     // Sanitize required parameters
-    if (!this.config.hasOwnProperty("url") || this.config.url.length == 0) {
+    if (!Object.hasOwn(this.config, "url") || this.config.url.length == 0) {
       this.errors.url = true;
       this.paramErrors = true;
     }
 
-    if (!this.config.hasOwnProperty("sheet") || this.config.sheet.length == 0) {
+    if (!Object.hasOwn(this.config, "sheet") || this.config.sheet.length == 0) {
       this.errors.sheet = true;
       this.paramErrors = true;
     }
 
-    if (!this.config.hasOwnProperty("range") || this.config.range.length == 0) {
+    if (!Object.hasOwn(this.config, "range") || this.config.range.length == 0) {
       this.errors.range = true;
       this.paramErrors = true;
     }
@@ -127,10 +135,13 @@ Module.register("MMM-GoogleSheets", {
       this.sanitizeNumbers([
         "updateInterval",
         "requestDelay",
-        "updateFadeSpeed"
+        "updateFadeSpeed",
+        "maxTableHeight",
+        "scrollTime",
+        "scrollDelayTime"
       ]);
 
-      var self = this;
+      let self = this;
       setTimeout(function () {
         //first data pull is delayed by config
         self.getData();
@@ -154,7 +165,15 @@ Module.register("MMM-GoogleSheets", {
     });
   },
 
-  socketNotificationReceived: function (notification, payload) {
+  notificationReceived: async function (notification) {
+    if (notification == "DOM_OBJECTS_UPDATED") {
+      if (this.config.scroll) {
+        this.tableScrolling.doScrolling(this.sheetData.length);
+      }
+    }
+  },
+
+  socketNotificationReceived: async function (notification, payload) {
     if (
       notification == "GOOGLE_SHEETS_DATA" &&
       payload.instanceId == this.identifier
@@ -167,12 +186,12 @@ Module.register("MMM-GoogleSheets", {
         this.runtimeErrorMsg = payload.error_msg;
         this.updateDom(this.config.updateFadeSpeed);
       } else {
-        let combinedData = this.combineSheetsData(payload);
-        let dataWithMerges = this.processMerges(
+        let combinedData = this.dataProcessing.combineSheetsData(payload);
+        let dataWithMerges = this.dataProcessing.processMerges(
           combinedData,
           payload.merge_data
         );
-        this.sheetData = this.processCellStyles(dataWithMerges);
+        this.sheetData = this.dataProcessing.processCellStyles(dataWithMerges);
 
         this.updateDom(this.config.updateFadeSpeed);
       }
@@ -181,7 +200,109 @@ Module.register("MMM-GoogleSheets", {
     }
   },
 
-  combineSheetsData: function (sheetData) {
+  /*
+    For any config parameters that are expected as integers, this
+    routine ensures they are numbers, and if they cannot be
+    converted to integers, then the module defaults are used.
+   */
+  sanitizeNumbers: function (keys) {
+    let self = this;
+    keys.forEach(function (key) {
+      if (isNaN(parseInt(self.config[key]))) {
+        self.config[key] = self.defaults[key];
+      } else {
+        self.config[key] = parseInt(self.config[key]);
+      }
+    });
+  }
+});
+
+class TableScrolling {
+  constructor(config) {
+    this.currentRowScroll = config.maxTableHeight + 1;
+    this.fullTableLength = 0;
+    this.config = config;
+  }
+
+  async doScrolling(fullTableLength) {
+    this.fullTableLength = fullTableLength;
+    this.setTableHeight(this.config.maxTableHeight);
+    while (true) {
+      if (this.currentRowScroll > this.fullTableLength) {
+		this.resetScroll();
+        this.currentRowScroll = this.config.maxTableHeight;
+      }
+
+      await this.scrollToRow(this.currentRowScroll, this.config.scrollTime);
+      this.currentRowScroll++;
+      await new Promise((resolve) =>
+        setTimeout(resolve, this.config.scrollDelayTime)
+      );
+    }
+  }
+
+  setTableHeight(row_num) {
+    let wrapper_el = document.getElementsByClassName("table-wrapper")[0];
+    let row_el =
+      document.getElementsByClassName("sheets-table-row")[row_num - 1];
+
+    wrapper_el.style.maxHeight = `${row_el.offsetHeight + row_el.offsetTop}px`;
+  }
+
+  resetScroll(){
+	let wrapper_el = document.getElementsByClassName("table-wrapper")[0];
+	wrapper_el.scrollTop = 0;
+  }
+
+  async scrollToRow(row_num, duration) {
+    let wrapper_el = document.getElementsByClassName("table-wrapper")[0];
+    let row_el =
+      document.getElementsByClassName("sheets-table-row")[row_num - 1];
+
+    let totalScrollDistance;
+    if (this.config.smoothScroll) {
+      let tableRows = Array.from(
+        document.getElementsByClassName("sheets-table-row")
+      );
+      totalScrollDistance =
+        tableRows.reduce((acc, row) => acc + row.scrollHeight, 0) /
+        tableRows.length;
+    } else {
+      totalScrollDistance =
+        row_el.offsetTop -
+        wrapper_el.offsetHeight +
+        row_el.offsetHeight -
+        wrapper_el.scrollTop;
+    }
+    let scrollY = wrapper_el.scrollTop;
+    let newScrollTop = totalScrollDistance + scrollY;
+    let oldTimestamp = document.timeline.currentTime;
+
+    await new Promise((resolve) => {
+      requestAnimationFrame(resolve);
+    });
+
+    while (scrollY < newScrollTop) {
+      let newTimestamp = document.timeline.currentTime;
+      scrollY +=
+        (totalScrollDistance * (newTimestamp - oldTimestamp)) / duration;
+      wrapper_el.scrollTop = scrollY;
+      oldTimestamp = newTimestamp;
+
+      await new Promise((resolve) => {
+        requestAnimationFrame(resolve);
+      });
+    }
+    wrapper_el.scrollTop = newScrollTop;
+  }
+}
+
+class GoogleSheetsDataProcessing {
+  constructor(config) {
+    this.config = config;
+  }
+
+  combineSheetsData(sheetData) {
     let data = sheetData.values.map((row, i) => {
       return row.map((col, j) => {
         return {
@@ -203,9 +324,9 @@ Module.register("MMM-GoogleSheets", {
     });
 
     return data;
-  },
+  }
 
-  processCellStyles: function (data) {
+  processCellStyles(data) {
     data.forEach((row, i) => {
       row.forEach((col, j) => {
         col.style = "";
@@ -220,19 +341,19 @@ Module.register("MMM-GoogleSheets", {
 
         if (this.config.cellStyle === "mimic") {
           col.style = `
-			background-color: ${col.background_color};
-			color: ${col.color};
-			text-decoration: ${col.text_decoration};
-			font-style: ${col.font_style};
-			font-size: ${col.font_size}pt;
-			font-weight: ${col.font_weight};
-			text-align: ${col.text_align};
-			vertical-align: ${col.vertical_align};
-			height: ${col.height}px;
-			max-height: ${col.height}px;
-			width: ${col.width}px;
-			max-width: ${col.width}px;
-		`;
+				background-color: ${col.background_color};
+				color: ${col.color};
+				text-decoration: ${col.text_decoration};
+				font-style: ${col.font_style};
+				font-size: ${col.font_size}pt;
+				font-weight: ${col.font_weight};
+				text-align: ${col.text_align};
+				vertical-align: ${col.vertical_align};
+				height: ${col.height}px;
+				max-height: ${col.height}px;
+				width: ${col.width}px;
+				max-width: ${col.width}px;
+			`;
 
           if (col.font_size * 1.333 > col.height) {
             col.style += "line-height:" + col.font_size * 1.2 + "px;";
@@ -279,9 +400,9 @@ Module.register("MMM-GoogleSheets", {
     });
 
     return data;
-  },
+  }
 
-  processMerges: function (data, merges) {
+  processMerges(data, merges) {
     merges.forEach((merge) => {
       let row = merge.start_row;
       let col = merge.start_col;
@@ -306,21 +427,5 @@ Module.register("MMM-GoogleSheets", {
     });
 
     return data;
-  },
-
-  /*
-    For any config parameters that are expected as integers, this
-    routine ensures they are numbers, and if they cannot be
-    converted to integers, then the module defaults are used.
-   */
-  sanitizeNumbers: function (keys) {
-    var self = this;
-    keys.forEach(function (key) {
-      if (isNaN(parseInt(self.config[key]))) {
-        self.config[key] = self.defaults[key];
-      } else {
-        self.config[key] = parseInt(self.config[key]);
-      }
-    });
   }
-});
+}
