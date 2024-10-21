@@ -11,6 +11,7 @@ https://github.com/MagicMirrorOrg/MagicMirror
 This module displays data from Google Sheets Spreadsheets on the MagicMirror². Any data that you can display on a spreadsheet you can now display on your MM! Create your own custom dashboard, stay up to date on important data, or even create your own custom modules in Google Sheets without having to write the code.
 
 ![Example 1](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Custom.png?raw=true)
+![Example 7](/image/README/MMM-GoogleSheets-Scroll.gif)
 ![Example 2](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Mimic.png?raw=true)
 ![Example 6](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/grocery.png?raw=true)
 ![Example 3](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Projects_Custom.png?raw=true)
