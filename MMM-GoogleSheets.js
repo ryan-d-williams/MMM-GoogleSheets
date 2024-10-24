@@ -10,7 +10,7 @@
 
 *********************************/
 Module.register("MMM-GoogleSheets", {
-  requiresVersion: "2.29.0",
+  requiresVersion: "2.2.0",
 
   defaults: {
     updateInterval: 10, // minutes
