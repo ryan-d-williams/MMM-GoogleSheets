@@ -166,7 +166,7 @@ Module.register("MMM-GoogleSheets", {
   },
 
   notificationReceived: async function (notification) {
-    if (notification == "DOM_OBJECTS_UPDATED") {
+    if (notification == "MODULE_DOM_UPDATED") {
       if (this.config.scroll) {
         this.tableScrolling.doScrolling(this.sheetData.length);
       }
