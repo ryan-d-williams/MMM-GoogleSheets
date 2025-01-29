@@ -305,6 +305,14 @@ class GoogleSheetsDataProcessing {
   combineSheetsData(sheetData) {
     let data = sheetData.values.map((row, i) => {
       return row.map((col, j) => {
+        let val_data = {
+          is_checkbox: sheetData.validations[i][j].checkbox,
+          is_dropdown: sheetData.validations[i][j].dropdown,
+        }
+
+        val_data.is_checked = val_data.is_checkbox && sheetData.validations[i][j].is_checked
+        val_data.dropdown_options = val_data.is_dropdown && sheetData.validations[i][j].dropdown_options
+
         return {
           value: col,
           background_color: sheetData.backgrounds[i][j],
@@ -318,7 +326,8 @@ class GoogleSheetsDataProcessing {
           height: sheetData.cell_sizes[i][j].height,
           width: sheetData.cell_sizes[i][j].width,
           merge: false,
-          display: true
+          display: true,
+          val_data: val_data
         };
       });
     });

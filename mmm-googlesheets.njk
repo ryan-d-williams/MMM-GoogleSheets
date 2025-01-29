@@ -23,7 +23,11 @@
                 </td>
               {% elif cell.display %}
                 <td class="small sheets-table-cell" style="{{cell.style}}">
-                  {{cell.value}}
+                  {% if cell.is_checkbox %}
+                    <input type="checkbox" disabled {% if cell.is_checked %}checked{% endif %} />
+                  {% else %}
+                    {{cell.value}}
+                  {% endif %}
                 </td>
               {% endif %}
             {% endfor %}
