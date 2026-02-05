@@ -10,12 +10,15 @@ https://github.com/MagicMirrorOrg/MagicMirror
 
 This module displays data from Google Sheets Spreadsheets on the MagicMirror². Any data that you can display on a spreadsheet you can now display on your MM! Create your own custom dashboard, stay up to date on important data, or even create your own custom modules in Google Sheets without having to write the code.
 
+**NEW: Interactive Checkboxes and Dropdowns!** Now you can click checkboxes and change dropdowns directly in MagicMirror, and your changes will be saved back to Google Sheets. Perfect for todo lists, shopping lists, status trackers, and more!
+
 ![Example 1](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Custom.png?raw=true)
 ![Example 7](/image/README/MMM-GoogleSheets-Scroll.gif)
 ![Example 2](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Orders_Mimic.png?raw=true)
 ![Example 6](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/grocery.png?raw=true)
 ![Example 3](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/Projects_Custom.png?raw=true)
 ![Example 4](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard.png?raw=true)
+![Example 6](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/chores.png?raw=true)
 ![Example 5](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/screenshots/scoreboard_2.png?raw=true)
 
 ## Installation
@@ -31,15 +34,20 @@ This installation process is two steps. Step 1 involves getting Google Apps Scri
    ![Add Library](/image/README/img2-AddLibrary.png)
    - Paste the following into the "Script ID" field `1a6A0PqVebZUkbUC8lq__djKv6y9wZyF8y7v8dIkPpV7-mdmxwrt5SxDK`
    - Click "Look Up"
-   - Select the most recent version of the library (currently 21)
+   - Select the most recent version of the library (currently 34)
    - Make sure the identifier says `MMMGoogleSheets`
    - Click `Add`
+   - **IMPORTANT: If you previously installed this module, you need to update your script to support the new checkbox/dropdown features.** Delete the existing code and follow the steps below.
    - Paste the following code into the code editor (you can remove the default code)
 
      ```
-     function doGet(e){
-       return MMMGoogleSheets.doGet(e);
-     }
+      function doGet(e){
+        return MMMGoogleSheets.doGet(e);
+      }
+
+      function doPost(e){
+        return MMMGoogleSheets.doPost(e);
+      }
      ```
    - Near the top right, click `Deploy` and then `New Deployment`
    ![Deploy](/image/README/img3-deploy.png)
@@ -183,8 +191,72 @@ At a minimum you need to supply the following required configuration parameters:
       <strong>Type</strong> <code>Boolean</code><br>Defaults to <code>false</code></td>
     </tr>
     <tr>
+  <td><code>writeableCheckboxes</code></td>
+  <td><strong>NEW:</strong> Enable interactive checkboxes. When enabled, users can click checkboxes in the MagicMirror interface and changes will be saved back to Google Sheets. Requires the updated Google Apps Script with <code>doPost()</code> function.<br><br><strong>Type</strong> <code>Boolean</code><br>Defaults to <code>true</code></td>
+</tr>
+<tr>
+  <td><code>writeableDropdowns</code></td>
+  <td><strong>NEW:</strong> Enable interactive dropdowns. When enabled, users can change dropdown values in the MagicMirror interface and changes will be saved back to Google Sheets. Requires the updated Google Apps Script with <code>doPost()</code> function.<br><br><strong>Type</strong> <code>Boolean</code><br>Defaults to <code>true</code></td>
+</tr>
+<tr>
+  <td><code>refreshOnEdit</code></td>
+  <td><strong>NEW:</strong> Automatically refresh data from Google Sheets after a checkbox or dropdown is changed. This ensures formulas and dependent cells are updated immediately in the display. Recommended to leave enabled.<br><br><strong>Type</strong> <code>Boolean</code><br>Defaults to <code>true</code></td>
+</tr>
+    <tr>
   </tbody>
 </table>
+
+### Styling Checkboxes and Dropdowns
+
+Checkboxes and dropdowns automatically adapt to your `cellStyle` setting:
+
+- **`mimic`** - Controls inherit the cell's colors and styling from Google Sheets
+- **`flat`** - Checkboxes use a custom flat design; dropdowns have minimal borders
+- **`text`** - Controls use only text colors (slightly subdued)
+- **`invert`** - Controls are enhanced for visibility on inverted backgrounds
+
+You can override the default styling by adding custom CSS to your `custom.css` file in your MagicMirror installation:
+
+#### Custom Checkbox Styling Examples
+```css
+/* Make checkboxes larger */
+.MMM-GoogleSheets input[type="checkbox"].simple-checkbox {
+  width: 24px;
+  height: 24px;
+}
+
+/* Custom checkbox color in flat mode */
+.MMM-GoogleSheets .gs-cellstyle-flat input[type="checkbox"].simple-checkbox:checked {
+  background: #00ff00;  /* Green background when checked */
+}
+
+/* Custom checkmark color */
+.MMM-GoogleSheets .gs-cellstyle-flat input[type="checkbox"].simple-checkbox:checked::before {
+  border-right-color: #000;  /* Black checkmark */
+  border-bottom-color: #000;
+}
+```
+
+#### Custom Dropdown Styling Examples
+```css
+/* Make dropdowns larger */
+.MMM-GoogleSheets select.dropdown.gs-dropdown {
+  font-size: 18px;
+  padding: 5px 25px 5px 10px;
+}
+
+/* Custom dropdown border color */
+.MMM-GoogleSheets select.dropdown.gs-dropdown {
+  border: 2px solid #ff0000;  /* Red border */
+}
+
+/* Style the dropdown arrow */
+.MMM-GoogleSheets .gs-select::after {
+  content: "▼";
+  font-size: 14px;
+  color: #ff0000;  /* Red arrow */
+}
+```
 
 ## Sample Configurations
 
@@ -296,22 +368,35 @@ In the future (if there is demand) I will update the library to use one script f
     </tbody>
 </table>
 
+## Updating the Module/Library
+
+### Updating the Module
+
+To update the module, navigate to the module folder and pull the updated repository
+
+```
+  cd ~/MagicMirror/modules/MMM-GoogleSheets
+  git pull
+```
+
 ## Google Apps Script Library
 
 The library feature of google apps script is used to make it easy to update the code in the future for new features or bug fixes. If you feel more comfortable seeing the code yourself, you can copy the code from the file [in this repo](https://github.com/ryan-d-williams/MMM-GoogleSheets/blob/master/code.gs). Note that if you choose this option, you will need to manually copy-paste future updates in.
 
-### Updating the library
+### Updating the Google Apps Script Library
 
 If the libary requires an update (your version is less than the version listed above), you should follow the following steps:
 
 1. Open the script file (`Extensions` -> `Apps Script` from your spreadsheet)
 2. On the left under "Libraries" you should see `MMMGoogleSheets`. Click on it
-3. Update the "Version" dropdown to the latest version (currently 21)
+3. Update the "Version" dropdown to the latest version (currently 34)
 4. __IMPORTANT: You must still redeploy the code as a web app for the changes to take place__
    - Click on `Deploy` -> `New Deployment`
    - __ALSO IMPORTANT: Make sure "Execute as" is still your email and "Who has access" is still set to "Anyone"__
    - Click `Deploy`
    - __Copy the new deployment URL to your config__ (if you forget this step the updates will not work)
+
+**NOTE:** If you started using the library before the interactive features (writeable checkboxes and dropdowns), you also need to update your local apps script code to include a `doPost()` method. See installation step 1 above.
 
 ### Why Google Apps Script?
 
@@ -320,6 +405,31 @@ Google Apps Script was chosen instead of the Google Sheets API because the [Shee
 ### Isn't it bad that Chrome says the project is "unsafe"?
 
 This is [default behavior](https://developers.google.com/sheets/api/quickstart/apps-script) for a Google Apps Script being deployed for the first time. If you are uncomfortable deploying it without seeing the code, see [this section](#google-apps-script-library) above
+
+## Troubleshooting
+
+### I see "Loading..." Forever
+
+This problem is usually one of two causes:
+
+1. The google apps script was not deployed correctly and the request runs into a permission error page
+2. There is an error in the request due to bad script URL or other parameter
+
+In either case, I recommend starting over with the installation steps and ensuring you deploy as "Anyone".
+
+### Interactive features (checkboxes/dropdowns) not working
+
+1. **Make sure you updated the Google Apps Script** - The script must include both `doGet()` and `doPost()` functions. See the end of installation step 1.
+
+2. **Redeploy the web app** - After updating the script, you must create a new deployment:
+   - Click `Deploy` → `New Deployment`
+   - Make sure "Execute as" is your email
+   - Make sure "Who has access" is set to `Anyone`
+   - Copy the new deployment URL to your config
+
+3. **Check the logs** - Look at MagicMirror logs for errors:
+
+4. **Verify cell validation** - Make sure your cells have data validation set up in Google Sheets (checkboxes or dropdowns)
 
 ## In the Wild
 

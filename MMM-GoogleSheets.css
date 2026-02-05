@@ -6,16 +6,150 @@
   overflow: hidden;
 }
 
-
 .MMM-GoogleSheets .sheets-table-data {
-  display:inline-block;
+  display: inline-block;
 }
 
-.MMM-GoogleSheets .sheets-table-row{
+.MMM-GoogleSheets .sheets-table-row {
   font-size: 0px;
 }
 
-.MMM-GoogleSheets .table-wrapper{
+.MMM-GoogleSheets .table-wrapper {
   overflow: hidden;
 }
 
+/* =========================
+ * CHECKBOX (default)
+ * ========================= */
+
+.MMM-GoogleSheets .gs-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.MMM-GoogleSheets input[type="checkbox"].simple-checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  vertical-align: middle;
+
+  /* Default (non-flat) behavior: native checkbox tinted to text color */
+  accent-color: currentColor;
+
+  cursor: pointer;
+}
+
+/* =========================
+ * CHECKBOX (flat mode exact behavior)
+ *
+ * Unchecked: transparent bg, border=currentColor
+ * Checked: bg=currentColor, WHITE checkmark
+ * ========================= */
+
+.MMM-GoogleSheets .gs-cellstyle-flat input[type="checkbox"].simple-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: transparent;
+  border: 2px solid var(--color-text);
+  border-radius: 2px;
+
+  position: relative;
+}
+
+.MMM-GoogleSheets .gs-cellstyle-flat input[type="checkbox"].simple-checkbox:checked {
+  background: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.MMM-GoogleSheets .gs-cellstyle-flat input[type="checkbox"].simple-checkbox:checked::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  width: 5px;
+  height: 9px;
+
+  /* white checkmark */
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+
+  transform: translate(-50%, -55%) rotate(45deg);
+  box-sizing: border-box;
+}
+
+/* =========================
+ * DROPDOWN (select)
+ * ========================= */
+
+.MMM-GoogleSheets .gs-select {
+  display: inline-block;
+  position: relative;
+  max-width: 100%;
+}
+
+.MMM-GoogleSheets select.dropdown.gs-dropdown {
+  font: inherit;
+  color: inherit;
+  background: transparent;         /* let td background show */
+  border: 1px solid currentColor;  /* matches text color */
+  border-radius: 4px;
+
+  padding: 2px 22px 2px 8px;
+  line-height: 1.2;
+  max-width: 100%;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+}
+
+.MMM-GoogleSheets .gs-select::after {
+  content: "▾";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-55%);
+  color: currentColor;
+  pointer-events: none;
+}
+
+.MMM-GoogleSheets select.dropdown.gs-dropdown:focus {
+  outline: none;
+}
+
+.MMM-GoogleSheets .gs-cellstyle-flat select.dropdown.gs-dropdown {
+  border: 1px solid var(--color-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.MMM-GoogleSheets .gs-cellstyle-flat select.dropdown.gs-dropdown:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.MMM-GoogleSheets select.dropdown.gs-dropdown option {
+  background-color: #000;
+  color: #fff;
+  padding: 4px 8px;
+}
+
+.MMM-GoogleSheets .gs-cellstyle-text input[type="checkbox"].simple-checkbox {
+  opacity: 0.9;
+}
+
+.MMM-GoogleSheets .gs-cellstyle-text select.dropdown.gs-dropdown {
+  border-color: currentColor;
+  opacity: 0.9;
+}
+
+.MMM-GoogleSheets .gs-cellstyle-invert input[type="checkbox"].simple-checkbox {
+  filter: brightness(1.2);
+}
+
+.MMM-GoogleSheets .gs-cellstyle-invert select.dropdown.gs-dropdown {
+  border-width: 2px;
+}

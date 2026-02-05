@@ -1,4 +1,6 @@
-<div class="wrapper">
+{% import "macros.njk" as macros %}
+
+<div class="wrapper gs-cellstyle-{{ config.cellStyle }}">
   {% if anyErrors %}
     {% if paramErrors %}
       {% for parameter, isError in errors %}
@@ -15,19 +17,17 @@
     <div class="table-wrapper">
       <table class="sheets-table">
         {% for row in sheetData %}
+          {% set rowIndex = loop.index0 %}
           <tr class="sheets-table-row">
             {% for cell in row %}
+              {% set colIndex = loop.index0 %}
               {% if cell.merge %}
-                <td class="small sheets-table-cell" style="{{cell.style}}" colspan="{{cell.merge_data.colspan}}" rowspan="{{cell.merge_data.rowspan}}"{>
-                  {{cell.value}}
+                <td class="small sheets-table-cell" style="{{cell.style}}" colspan="{{cell.merge_data.colspan}}" rowspan="{{cell.merge_data.rowspan}}">
+                  {{ macros.renderCell(cell, rowIndex, colIndex) }}
                 </td>
               {% elif cell.display %}
                 <td class="small sheets-table-cell" style="{{cell.style}}">
-                  {% if cell.is_checkbox %}
-                    <input type="checkbox" disabled {% if cell.is_checked %}checked{% endif %} />
-                  {% else %}
-                    {{cell.value}}
-                  {% endif %}
+                  {{ macros.renderCell(cell, rowIndex, colIndex) }}
                 </td>
               {% endif %}
             {% endfor %}

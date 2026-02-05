@@ -1,0 +1,31 @@
+{% macro renderDropdown(val_data, rowIndex, colIndex) %}
+  <span class="gs-select">
+    <select class="dropdown gs-dropdown gs-interactive-dropdown"
+            data-row="{{ rowIndex }}"
+            data-col="{{ colIndex }}"
+            tabindex="0">
+      {% for option in val_data.dropdown_options %}
+        <option value="{{ option }}" {% if option == val_data.dropdown_selected %}selected{% endif %}>
+          {{ option }}
+        </option>
+      {% endfor %}
+    </select>
+  </span>
+{% endmacro %}
+
+{% macro renderCell(cell, rowIndex, colIndex) %}
+  {% if cell.val_data.is_checkbox %}
+    <span class="gs-checkbox">
+      <input type="checkbox" class="simple-checkbox gs-interactive-checkbox"
+      {% if cell.val_data.is_checked %}checked{% endif %}
+      data-row="{{ rowIndex }}"
+      data-col="{{ colIndex }}"
+      tabindex="0"
+      />
+    </span>
+  {% elif cell.val_data.is_dropdown %}
+    {{ renderDropdown(cell.val_data, rowIndex, colIndex) }}
+  {% else %}
+    {{ cell.value }}
+  {% endif %}
+{% endmacro %}
