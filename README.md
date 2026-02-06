@@ -1,5 +1,7 @@
 # MMM-GoogleSheets
 
+__Are you here to update the module to the newest version?__ If so, please note that the most recent change was breaking for the old versions of the Google Apps Script library. If you want to update, you need to update both the module and the library. Steps are in the update sections below.
+
 __NOTE: If you use this module, please send me example images that I can include in the bottom of this page so others can be inspired by your work!__
 
 This a module for MagicMirror²
